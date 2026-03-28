@@ -7,3 +7,76 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Hero {
+  id        String   @id @default(cuid())
+  name      String
+  title     String
+  tagline   String
+  ctaLabel  String
+  ctaHref   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("heroes")
+}
+
+model About {
+  id        String   @id @default(cuid())
+  bio       String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("abouts")
+}
+
+model Skill {
+  id           String   @id @default(cuid())
+  name         String
+  category     String
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([name, category])
+  @@map("skills")
+}
+
+model ExperienceEntry {
+  id           String    @id @default(cuid())
+  company      String
+  role         String
+  startDate    DateTime
+  endDate      DateTime?
+  description  String    @db.Text
+  displayOrder Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("experience_entries")
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  summary      String   @db.Text
+  technologies String[]
+  repoUrl      String?
+  demoUrl      String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model ContactReference {
+  id           String   @id @default(cuid())
+  label        String
+  href         String
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("contact_references")
+}

@@ -1,15 +1,8 @@
-version: '3.9'
-
 services:
-  app:
+  next-app:
     environment:
       NODE_ENV: development
 
-  db:
+  postgres:
     ports:
       - '5432:5432'
-
-  storage:
-    ports:
-      - '9000:9000'
-      - '9001:9001'
