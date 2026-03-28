@@ -11,6 +11,7 @@ out/
 dist/
 build/
 coverage/
+prisma/generated/
 
 # ------------------------------
 # Logs
@@ -31,6 +32,10 @@ pnpm-debug.log*
 .env.test.local
 .env.production.local
 .env*.local
+*.pem
+*.key
+docker/nginx/certs/*.pem
+docker/nginx/certs/*.key
 
 # ------------------------------
 # TypeScript

@@ -1,0 +1,20 @@
+module.exports = {
+  ci: {
+    collect: {
+      url: ['http://localhost:3000'],
+      numberOfRuns: 3,
+    },
+    assert: {
+      assertions: {
+        'categories:performance': ['warn', { minScore: 0.9 }],
+        'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
+        'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
+        'interaction-to-next-paint': ['error', { maxNumericValue: 200 }],
+        'total-blocking-time': ['warn', { maxNumericValue: 300 }],
+      },
+    },
+    upload: {
+      target: 'temporary-public-storage',
+    },
+  },
+}
