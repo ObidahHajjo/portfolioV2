@@ -6,7 +6,24 @@
       "Bash(powershell -Command \".specify/scripts/powershell/setup-plan.ps1 -Json\")",
       "Bash(powershell -Command \".specify/scripts/powershell/update-agent-context.ps1 -AgentType claude\")",
       "Bash(powershell -Command \".specify/scripts/powershell/check-prerequisites.ps1 -Json\")",
-      "Bash(powershell -Command \".specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks\")"
+      "Bash(powershell -Command \".specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks\")",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/create-new-feature.ps1\" \"Create the specification for Phase 1 only, based strictly on PLAN.md .\" -Json -ShortName \"public-portfolio-mvp\" \"Phase 1 Public Portfolio MVP\")",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -PathsOnly)",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/update-agent-context.ps1\" -AgentType claude)",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json)",
+      "Bash(powershell.exe -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(npm install:*)",
+      "Bash(powershell.exe -NonInteractive -Command \".specify/scripts/powershell/create-new-feature.ps1 ''Create the specification for Phase 2 only, based strictly on PLAN.md.'' -Json -ShortName ''content-data-model'' ''Phase 2 Content Architecture and Data Model''\")",
+      "Bash(powershell.exe -NonInteractive -Command \".specify/scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(''''deps:'''', json.dumps\\(d.get\\(''''dependencies'''',{}\\), indent=2\\)\\); print\\(''''devdeps:'''', json.dumps\\(d.get\\(''''devDependencies'''',{}\\), indent=2\\)\\)\")",
+      "Bash(node -e \"const {z} = require\\(''zod''\\); try { z.string\\(\\).cuid\\(\\); console.log\\(''cuid OK''\\); } catch\\(e\\) { console.log\\(''cuid FAILED:'', e.message\\); }\")",
+      "Bash(powershell -File \".specify/scripts/powershell/create-new-feature.ps1\" \"Create the specification for Phase 3 only, based strictly on PLAN.md.\" -Json -ShortName \"admin-portal-mvp\" \"Phase 3 - Admin Portal MVP\")",
+      "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -PathsOnly)",
+      "Bash(powershell -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
+      "Bash(powershell -File \".specify/scripts/powershell/update-agent-context.ps1\" -AgentType claude)",
+      "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json)",
+      "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)"
     ]
   }
 }

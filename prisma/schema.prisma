@@ -185,3 +185,13 @@ model MediaAsset {
 
   @@map("media_assets")
 }
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String   @db.VarChar(254)
+  success   Boolean
+  attemptAt DateTime @default(now())
+
+  @@index([email, attemptAt])
+  @@map("login_attempts")
+}
