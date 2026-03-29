@@ -1,14 +1,18 @@
-import { db } from '@/lib/db'
-import type { AboutData } from '@/types/portfolio'
+import { db } from '@/lib/db';
+import type { ProfileData } from '@/types/portfolio';
 
-export async function getAboutData(): Promise<AboutData | null> {
-  const result = await db.about.findFirst()
+export async function getProfileData(): Promise<ProfileData | null> {
+  try {
+    const result = await db.profile.findUniqueOrThrow({
+      where: { singletonKey: 'singleton' },
+    });
 
-  if (result === null) {
-    return null
-  }
-
-  return {
-    bio: result.bio,
+    return {
+      fullName: result.fullName,
+      tagline: result.tagline,
+      bio: result.bio,
+    };
+  } catch {
+    return null;
   }
 }

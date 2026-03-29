@@ -8,75 +8,180 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Profile {
+  id           String   @id @default(cuid())
+  singletonKey String   @unique @default("singleton")
+  fullName     String   @db.VarChar(100)
+  tagline      String   @db.VarChar(200)
+  bio          String   @db.Text
+  contactEmail String   @db.VarChar(254)
+  avatarUrl    String?  @db.VarChar(500)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("profiles")
+}
+
 model Hero {
-  id        String   @id @default(cuid())
-  name      String
-  title     String
-  tagline   String
-  ctaLabel  String
-  ctaHref   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String   @id @default(cuid())
+  singletonKey String   @unique @default("singleton")
+  headline     String   @db.VarChar(150)
+  subHeadline  String   @db.VarChar(300)
+  ctaText      String   @db.VarChar(50)
+  ctaHref      String   @db.VarChar(500)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@map("heroes")
 }
 
-model About {
-  id        String   @id @default(cuid())
-  bio       String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model ContactSettings {
+  id           String   @id @default(cuid())
+  singletonKey String   @unique @default("singleton")
+  contactEmail String   @db.VarChar(254)
+  formEnabled  Boolean  @default(true)
+  ctaMessage   String   @db.VarChar(500)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  @@map("abouts")
+  @@map("contact_settings")
+}
+
+model SocialLink {
+  id           String   @id @default(cuid())
+  platform     String   @db.VarChar(50)
+  url          String   @db.VarChar(500)
+  displayOrder Int      @default(0)
+  published    Boolean  @default(false)
+  isVisible    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([published, isVisible, displayOrder])
+  @@map("social_links")
+}
+
+model Experience {
+  id           String   @id @default(cuid())
+  company      String   @db.VarChar(150)
+  role         String   @db.VarChar(150)
+  startDate    DateTime
+  endDate      DateTime?
+  description  String   @db.Text
+  highlights   String[]
+  displayOrder Int      @default(0)
+  published    Boolean  @default(false)
+  isVisible    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([published, isVisible, displayOrder])
+  @@map("experiences")
 }
 
 model Skill {
-  id           String   @id @default(cuid())
-  name         String
-  category     String
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           String         @id @default(cuid())
+  name         String         @db.VarChar(100)
+  category     String         @db.VarChar(100)
+  proficiency  String?        @db.VarChar(50)
+  displayOrder Int            @default(0)
+  published    Boolean        @default(false)
+  isVisible    Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  projects     ProjectSkill[]
 
   @@unique([name, category])
+  @@index([published, isVisible, displayOrder])
   @@map("skills")
 }
 
-model ExperienceEntry {
-  id           String    @id @default(cuid())
-  company      String
-  role         String
-  startDate    DateTime
-  endDate      DateTime?
-  description  String    @db.Text
-  displayOrder Int       @default(0)
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-
-  @@map("experience_entries")
-}
-
 model Project {
-  id           String   @id @default(cuid())
-  title        String
-  summary      String   @db.Text
-  technologies String[]
-  repoUrl      String?
-  demoUrl      String?
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id           String         @id @default(cuid())
+  title        String         @db.VarChar(150)
+  summary      String         @db.Text
+  repoUrl      String?        @db.VarChar(500)
+  demoUrl      String?        @db.VarChar(500)
+  mediaAssetId String?
+  displayOrder Int            @default(0)
+  published    Boolean        @default(false)
+  isVisible    Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  skills       ProjectSkill[]
+  caseStudy    CaseStudy?
+  mediaAsset   MediaAsset?    @relation(fields: [mediaAssetId], references: [id], onDelete: SetNull)
 
+  @@index([published, isVisible, displayOrder])
   @@map("projects")
 }
 
-model ContactReference {
-  id           String   @id @default(cuid())
-  label        String
-  href         String
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model ProjectSkill {
+  projectId String
+  skillId   String
 
-  @@map("contact_references")
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([projectId, skillId])
+  @@map("project_skills")
+}
+
+model CaseStudy {
+  id            String   @id @default(cuid())
+  projectId     String   @unique
+  challenge     String   @db.Text
+  solution      String   @db.Text
+  outcomes      String   @db.Text
+  mediaAssetIds String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Restrict)
+
+  @@map("case_studies")
+}
+
+model Testimonial {
+  id            String   @id @default(cuid())
+  authorName    String   @db.VarChar(100)
+  authorRole    String   @db.VarChar(150)
+  authorCompany String   @db.VarChar(150)
+  quote         String   @db.Text
+  displayOrder  Int      @default(0)
+  published     Boolean  @default(false)
+  isVisible     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([published, isVisible, displayOrder])
+  @@map("testimonials")
+}
+
+model SeoMetadata {
+  id              String   @id @default(cuid())
+  pageSlug        String   @unique @db.VarChar(100)
+  pageTitle       String   @db.VarChar(70)
+  metaDescription String   @db.VarChar(160)
+  keywords        String[]
+  ogTitle         String?  @db.VarChar(70)
+  ogDescription   String?  @db.VarChar(200)
+  ogImageUrl      String?  @db.VarChar(500)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("seo_metadata")
+}
+
+model MediaAsset {
+  id         String    @id @default(cuid())
+  fileName   String    @db.VarChar(255)
+  storageUrl String    @db.VarChar(500)
+  fileType   String    @db.VarChar(50)
+  ownerType  String    @db.VarChar(50)
+  ownerId    String    @db.VarChar(36)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  projects   Project[]
+
+  @@map("media_assets")
 }

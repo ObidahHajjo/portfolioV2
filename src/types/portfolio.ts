@@ -1,12 +1,13 @@
 export interface HeroData {
-  name: string;
-  title: string;
-  tagline: string;
-  ctaLabel: string;
+  headline: string;
+  subHeadline: string;
+  ctaText: string;
   ctaHref: string;
 }
 
-export interface AboutData {
+export interface ProfileData {
+  fullName: string;
+  tagline: string;
   bio: string;
 }
 
@@ -21,37 +22,44 @@ export interface SkillGroup {
   skills: Pick<SkillData, 'name'>[];
 }
 
-export interface ExperienceEntryData {
+export interface ExperienceData {
   company: string;
   role: string;
   startDate: Date;
   endDate: Date | null;
   description: string;
+  highlights: string[];
   displayOrder: number;
+  published: boolean;
+  isVisible: boolean;
 }
 
 export interface ProjectData {
   title: string;
   summary: string;
-  technologies: string[];
   repoUrl: string | null;
   demoUrl: string | null;
+  mediaAssetId: string | null;
   displayOrder: number;
+  published: boolean;
+  isVisible: boolean;
 }
 
-export interface ContactReferenceData {
-  label: string;
-  href: string;
+export interface SocialLinkData {
+  platform: string;
+  url: string;
   displayOrder: number;
+  published: boolean;
+  isVisible: boolean;
 }
 
 export interface PortfolioPageData {
   hero: HeroData | null;
-  about: AboutData | null;
+  profile: ProfileData | null;
   skillGroups: SkillGroup[];
-  experience: ExperienceEntryData[];
+  experience: ExperienceData[];
   projects: ProjectData[];
-  contactRefs: ContactReferenceData[];
+  socialLinks: SocialLinkData[];
 }
 
 export interface NavLink {

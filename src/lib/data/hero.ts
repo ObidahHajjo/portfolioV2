@@ -1,18 +1,19 @@
-import { db } from '@/lib/db'
-import type { HeroData } from '@/types/portfolio'
+import { db } from '@/lib/db';
+import type { HeroData } from '@/types/portfolio';
 
 export async function getHeroData(): Promise<HeroData | null> {
-  const result = await db.hero.findFirst()
+  try {
+    const result = await db.hero.findUniqueOrThrow({
+      where: { singletonKey: 'singleton' },
+    });
 
-  if (result === null) {
-    return null
-  }
-
-  return {
-    name: result.name,
-    title: result.title,
-    tagline: result.tagline,
-    ctaLabel: result.ctaLabel,
-    ctaHref: result.ctaHref,
+    return {
+      headline: result.headline,
+      subHeadline: result.subHeadline,
+      ctaText: result.ctaText,
+      ctaHref: result.ctaHref,
+    };
+  } catch {
+    return null;
   }
 }

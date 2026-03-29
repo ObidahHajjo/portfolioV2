@@ -1,12 +1,12 @@
-import type { AboutData } from '@/types/portfolio'
+import type { ProfileData } from '@/types/portfolio';
 
 interface AboutSectionProps {
-  data: AboutData | null
+  data: ProfileData | null;
 }
 
 export default function AboutSection({ data }: AboutSectionProps) {
   if (data === null) {
-    return null
+    return null;
   }
 
   return (
@@ -15,12 +15,15 @@ export default function AboutSection({ data }: AboutSectionProps) {
         <h2 className="mb-6 text-3xl font-bold text-gray-900" id="about-heading">
           About
         </h2>
-        {data.bio.split('\n\n').map((paragraph) => (
-          <p className="mb-4 text-lg leading-relaxed text-gray-700" key={paragraph}>
+        <p className="mb-6 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+          {data.tagline}
+        </p>
+        {data.bio.split('\n\n').map((paragraph, index) => (
+          <p className="mb-4 text-lg leading-relaxed text-gray-700" key={index}>
             {paragraph}
           </p>
         ))}
       </div>
     </section>
-  )
+  );
 }
