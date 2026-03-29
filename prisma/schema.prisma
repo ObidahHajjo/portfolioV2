@@ -177,6 +177,7 @@ model MediaAsset {
   fileName   String    @db.VarChar(255)
   storageUrl String    @db.VarChar(500)
   fileType   String    @db.VarChar(50)
+  fileSize   Int       @default(0)
   ownerType  String    @db.VarChar(50)
   ownerId    String    @db.VarChar(36)
   createdAt  DateTime  @default(now())

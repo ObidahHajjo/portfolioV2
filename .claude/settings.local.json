@@ -23,7 +23,8 @@
       "Bash(powershell -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
       "Bash(powershell -File \".specify/scripts/powershell/update-agent-context.ps1\" -AgentType claude)",
       "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json)",
-      "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)"
+      "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(find \"C:/Users/cdax28/Documents/senior-dev-portfolio/src/app/\\(admin\\)\" -type f)"
     ]
   }
 }

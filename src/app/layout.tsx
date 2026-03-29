@@ -1,9 +1,8 @@
-import type { Metadata } from 'next'
-import { Inter, Geist } from 'next/font/google'
-import './globals.css'
-import { cn } from "@/lib/utils";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: {
@@ -19,16 +18,16 @@ export const metadata: Metadata = {
       'Senior software engineer building resilient web platforms, thoughtful developer tools, and scalable product experiences.',
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased bg-white text-gray-900">{children}</body>
     </html>
-  )
+  );
 }
