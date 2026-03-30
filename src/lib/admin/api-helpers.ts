@@ -48,8 +48,5 @@ export function notFound() {
 }
 
 export function ok(data?: unknown, init?: ResponseInit) {
-  if (data === undefined || data === null) {
-    return new NextResponse(null, { ...init, status: init?.status ?? 204 });
-  }
-  return NextResponse.json(data, init);
+  return NextResponse.json(data ?? { ok: true }, init);
 }

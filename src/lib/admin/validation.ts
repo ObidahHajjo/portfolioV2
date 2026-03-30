@@ -7,8 +7,6 @@ export {
   SeoMetadataSchema,
   SkillSchema,
   caseStudyMetricSchema,
-  createCaseStudySchema,
-  updateCaseStudySchema,
 } from '@/lib/content/validation';
 
 const UrlOrPathSchema = z

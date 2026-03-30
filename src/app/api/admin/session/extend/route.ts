@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   try {
     const session = await requireSession(req);
 
-    if (session instanceof Response) {
+    if (session instanceof NextResponse) {
       return session;
     }
 

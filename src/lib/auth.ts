@@ -37,7 +37,7 @@ export async function checkLockout(
     return { locked: false };
   }
 
-  const newestAttempt = await db.loginAttempt.findFirst({
+  const oldestAttempt = await db.loginAttempt.findFirst({
     where: {
       email,
       success: false,
@@ -46,15 +46,15 @@ export async function checkLockout(
       },
     },
     orderBy: {
-      attemptAt: 'desc',
+      attemptAt: 'asc',
     },
   });
 
-  if (!newestAttempt) {
+  if (!oldestAttempt) {
     return { locked: false };
   }
 
-  const lockoutEndsAt = newestAttempt.attemptAt.getTime() + LOCKOUT_WINDOW_MS;
+  const lockoutEndsAt = oldestAttempt.attemptAt.getTime() + LOCKOUT_WINDOW_MS;
   const minutesRemaining = Math.max(1, Math.ceil((lockoutEndsAt - Date.now()) / 60000));
 
   return { locked: true, minutesRemaining };

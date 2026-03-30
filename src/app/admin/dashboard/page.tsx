@@ -1,60 +1,64 @@
 import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { db } from '@/lib/db';
+
+type DashboardSummary = {
+  projects: { published: number; draft: number };
+  skills: { published: number; draft: number };
+  experiences: { published: number; draft: number };
+  testimonials: { published: number; draft: number };
+  socialLinks: { published: number; draft: number };
+};
 
 export default async function AdminDashboardPage() {
-  const [
-    projectsPublished,
-    projectsDraft,
-    skillsPublished,
-    skillsDraft,
-    experiencesPublished,
-    experiencesDraft,
-    testimonialsPublished,
-    testimonialsDraft,
-    socialLinksPublished,
-    socialLinksDraft,
-  ] = await Promise.all([
-    db.project.count({ where: { published: true } }),
-    db.project.count({ where: { published: false } }),
-    db.skill.count({ where: { published: true } }),
-    db.skill.count({ where: { published: false } }),
-    db.experience.count({ where: { published: true } }),
-    db.experience.count({ where: { published: false } }),
-    db.testimonial.count({ where: { published: true } }),
-    db.testimonial.count({ where: { published: false } }),
-    db.socialLink.count({ where: { published: true } }),
-    db.socialLink.count({ where: { published: false } }),
-  ]);
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/admin/dashboard/summary`,
+    {
+      cache: 'no-store',
+    }
+  );
+
+  const summary: DashboardSummary = response.ok
+    ? await response.json()
+    : {
+        projects: { published: 0, draft: 0 },
+        skills: { published: 0, draft: 0 },
+        experiences: { published: 0, draft: 0 },
+        testimonials: { published: 0, draft: 0 },
+        socialLinks: { published: 0, draft: 0 },
+      };
 
   const cards = [
     {
       title: 'Projects',
       href: '/admin/projects',
-      published: projectsPublished,
-      draft: projectsDraft,
+      published: summary.projects.published,
+      draft: summary.projects.draft,
     },
-    { title: 'Skills', href: '/admin/skills', published: skillsPublished, draft: skillsDraft },
+    {
+      title: 'Skills',
+      href: '/admin/skills',
+      published: summary.skills.published,
+      draft: summary.skills.draft,
+    },
     {
       title: 'Experiences',
       href: '/admin/experiences',
-      published: experiencesPublished,
-      draft: experiencesDraft,
+      published: summary.experiences.published,
+      draft: summary.experiences.draft,
     },
     {
       title: 'Testimonials',
       href: '/admin/testimonials',
-      published: testimonialsPublished,
-      draft: testimonialsDraft,
+      published: summary.testimonials.published,
+      draft: summary.testimonials.draft,
     },
     {
       title: 'Social Links',
       href: '/admin/social-links',
-      published: socialLinksPublished,
-      draft: socialLinksDraft,
+      published: summary.socialLinks.published,
+      draft: summary.socialLinks.draft,
     },
   ];
 
@@ -76,9 +80,12 @@ export default async function AdminDashboardPage() {
                 <Badge>Published: {card.published}</Badge>
                 <Badge variant="outline">Draft: {card.draft}</Badge>
               </div>
-              <Button variant="outline" render={<Link href={card.href} />}>
+              <Link
+                className="inline-flex items-center justify-center rounded-lg border border-border bg-background px-2.5 py-1.5 text-sm font-medium transition-all hover:bg-muted hover:text-foreground"
+                href={card.href}
+              >
                 Manage {card.title}
-              </Button>
+              </Link>
             </CardContent>
           </Card>
         ))}

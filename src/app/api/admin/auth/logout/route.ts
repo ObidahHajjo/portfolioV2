@@ -10,8 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    session.destroy();
-    await session.save();
+    await session.destroy();
 
     return NextResponse.json({ ok: true });
   } catch {
