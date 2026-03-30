@@ -1,8 +1,6 @@
 import { getPublishedTestimonials, getSectionVisibility } from '@/lib/content/queries';
 import { TestimonialCard } from './TestimonialCard';
 
-export const dynamic = 'force-dynamic';
-
 export async function TestimonialsSection() {
   const [testimonials, visibility] = await Promise.all([
     getPublishedTestimonials(),

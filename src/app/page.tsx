@@ -1,22 +1,50 @@
 import Header from '@/components/layout/Header';
 import AboutSection from '@/components/sections/AboutSection';
+import ContactSection from '@/components/sections/ContactSection';
+import ExperienceSection from '@/components/sections/ExperienceSection';
 import HeroSection from '@/components/sections/HeroSection';
-import TestimonialsSection from '@/components/sections/TestimonialsSection';
-import ArticlesSection from '@/components/sections/ArticlesSection';
-import OpenSourceSection from '@/components/sections/OpenSourceSection';
-import TalksSection from '@/components/sections/TalksSection';
+import ProjectsSection from '@/components/sections/ProjectsSection';
+import SkillsSection from '@/components/sections/SkillsSection';
 import { getProfileData } from '@/lib/data/about';
+import { getSocialLinks } from '@/lib/data/contact';
+import { getExperienceEntries } from '@/lib/data/experience';
 import { getHeroData } from '@/lib/data/hero';
+import { getProjects } from '@/lib/data/projects';
+import { getSkillGroups } from '@/lib/data/skills';
 import type { NavLink } from '@/types/portfolio';
 
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const [hero, profile] = await Promise.all([getHeroData(), getProfileData()]);
+  const [hero, profile, skillGroups, experience, projects, socialLinks] = await Promise.all([
+    getHeroData(),
+    getProfileData(),
+    getSkillGroups(),
+    getExperienceEntries(),
+    getProjects(),
+    getSocialLinks(),
+  ]);
+
   const navLinks: NavLink[] = [];
 
   if (profile !== null) {
     navLinks.push({ label: 'About', anchor: 'about' });
+  }
+
+  if (skillGroups.length > 0) {
+    navLinks.push({ label: 'Skills', anchor: 'skills' });
+  }
+
+  if (experience.length > 0) {
+    navLinks.push({ label: 'Experience', anchor: 'experience' });
+  }
+
+  if (projects.length > 0) {
+    navLinks.push({ label: 'Projects', anchor: 'projects' });
+  }
+
+  if (socialLinks.length > 0) {
+    navLinks.push({ label: 'Contact', anchor: 'contact' });
   }
 
   return (
@@ -25,10 +53,10 @@ export default async function Home() {
       <main id="main-content">
         <HeroSection data={hero} />
         <AboutSection data={profile} />
-        <TestimonialsSection />
-        <ArticlesSection />
-        <OpenSourceSection />
-        <TalksSection />
+        <SkillsSection groups={skillGroups} />
+        <ExperienceSection entries={experience} />
+        <ProjectsSection projects={projects} />
+        <ContactSection links={socialLinks} />
       </main>
     </>
   );

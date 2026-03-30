@@ -18,6 +18,10 @@ export const metadata: Metadata = {
       'Senior software engineer building resilient web platforms, thoughtful developer tools, and scalable product experiences.',
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

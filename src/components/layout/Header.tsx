@@ -1,25 +1,31 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import { useState } from 'react';
 
-import type { NavLink } from '@/types/portfolio'
+import type { NavLink } from '@/types/portfolio';
 
 interface HeaderProps {
-  developerName: string
-  navLinks: NavLink[]
+  developerName: string;
+  navLinks: NavLink[];
 }
 
 export default function Header({ developerName, navLinks }: HeaderProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur">
+      <a
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-gray-900 focus:shadow-lg"
+        href="#main-content"
+      >
+        Skip to content
+      </a>
       <nav
         aria-label="Main navigation"
         className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"
       >
         <a
-          className="rounded text-sm font-semibold uppercase tracking-[0.24em] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="inline-flex min-h-11 items-center rounded text-sm font-semibold uppercase tracking-[0.24em] text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           href="#hero"
         >
           {developerName}
@@ -52,7 +58,10 @@ export default function Header({ developerName, navLinks }: HeaderProps) {
         </button>
       </nav>
 
-      <div className={isOpen ? 'block border-t border-gray-200 md:hidden' : 'hidden'} id="mobile-menu">
+      <div
+        className={isOpen ? 'block border-t border-gray-200 md:hidden' : 'hidden'}
+        id="mobile-menu"
+      >
         <ul className="space-y-2 px-6 py-4">
           {navLinks.map((link) => (
             <li key={link.anchor}>
@@ -68,5 +77,5 @@ export default function Header({ developerName, navLinks }: HeaderProps) {
         </ul>
       </div>
     </header>
-  )
+  );
 }

@@ -12,7 +12,8 @@ export async function getProfileData(): Promise<ProfileData | null> {
       tagline: result.tagline,
       bio: result.bio,
     };
-  } catch {
+  } catch (error) {
+    console.error('Failed to fetch profile data:', error);
     return null;
   }
 }

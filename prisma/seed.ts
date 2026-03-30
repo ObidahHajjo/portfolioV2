@@ -106,7 +106,7 @@ async function main() {
           'Guided a platform modernization program spanning several internal products.',
           'Introduced delivery automation that improved release confidence and incident visibility.',
         ],
-        displayOrder: 10,
+        displayOrder: 30,
         published: true,
         isVisible: true,
       },
@@ -133,7 +133,7 @@ async function main() {
         description:
           'Delivered responsive web applications, API integrations, and maintainable UI systems for a portfolio of client and internal products.',
         highlights: ['Partnered closely with product and design on fast-moving client delivery.'],
-        displayOrder: 30,
+        displayOrder: 10,
         published: false,
         isVisible: true,
       },
@@ -443,6 +443,12 @@ async function main() {
       published: true,
       isVisible: true,
     },
+  });
+
+  await db.sectionVisibility.upsert({
+    where: { section: 'testimonials' },
+    update: { enabled: true },
+    create: { section: 'testimonials', enabled: true },
   });
 
   await db.sectionVisibility.upsert({

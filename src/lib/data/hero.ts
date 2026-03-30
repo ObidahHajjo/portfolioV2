@@ -13,7 +13,8 @@ export async function getHeroData(): Promise<HeroData | null> {
       ctaText: result.ctaText,
       ctaHref: result.ctaHref,
     };
-  } catch {
+  } catch (error) {
+    console.error('Failed to fetch hero data:', error);
     return null;
   }
 }

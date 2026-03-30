@@ -1,7 +1,5 @@
 import { getPublishedTalks, getSectionVisibility } from '@/lib/content/queries';
 
-export const dynamic = 'force-dynamic';
-
 export async function TalksSection() {
   const [talks, visibility] = await Promise.all([
     getPublishedTalks(),

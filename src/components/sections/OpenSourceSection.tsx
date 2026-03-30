@@ -1,7 +1,5 @@
 import { getPublishedOpenSourceContributions, getSectionVisibility } from '@/lib/content/queries';
 
-export const dynamic = 'force-dynamic';
-
 export async function OpenSourceSection() {
   const [contributions, visibility] = await Promise.all([
     getPublishedOpenSourceContributions(),

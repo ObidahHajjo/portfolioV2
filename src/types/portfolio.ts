@@ -30,27 +30,21 @@ export interface ExperienceData {
   description: string;
   highlights: string[];
   displayOrder: number;
-  published: boolean;
-  isVisible: boolean;
 }
 
 export interface ProjectData {
   title: string;
   summary: string;
+  technologies: string[];
   repoUrl: string | null;
   demoUrl: string | null;
-  mediaAssetId: string | null;
   displayOrder: number;
-  published: boolean;
-  isVisible: boolean;
 }
 
 export interface SocialLinkData {
   platform: string;
   url: string;
   displayOrder: number;
-  published: boolean;
-  isVisible: boolean;
 }
 
 export interface PortfolioPageData {
