@@ -1,16 +1,82 @@
 import type {
+  Article,
+  CaseStudy,
   ContactSettings,
+  CvAsset,
+  Experience,
   Hero,
+  OpenSourceContribution,
   Profile,
   Project,
+  SectionVisibility,
   SeoMetadata,
-  SocialLink,
-  Testimonial,
-  Experience,
   Skill,
+  SocialLink,
+  Talk,
+  Testimonial,
 } from '@prisma/client';
 
 import { db } from '@/lib/db';
+
+export async function getPublishedCaseStudies() {
+  return db.caseStudy.findMany({
+    where: { published: true, isVisible: true },
+    orderBy: { displayOrder: 'asc' },
+    include: {
+      metrics: { orderBy: { displayOrder: 'asc' } },
+      project: { select: { id: true, title: true } },
+    },
+  });
+}
+
+export async function getCaseStudyBySlug(slug: string) {
+  return db.caseStudy.findFirst({
+    where: { slug, published: true, isVisible: true },
+    include: {
+      metrics: { orderBy: { displayOrder: 'asc' } },
+      project: { select: { id: true, title: true } },
+    },
+  });
+}
+
+export async function getPublishedCvAsset() {
+  return db.cvAsset.findFirst({
+    where: { published: true },
+    orderBy: { createdAt: 'desc' },
+  });
+}
+
+export async function getPublishedTestimonials() {
+  return db.testimonial.findMany({
+    where: { published: true, isVisible: true },
+    orderBy: { displayOrder: 'asc' },
+  });
+}
+
+export async function getPublishedArticles() {
+  return db.article.findMany({
+    where: { published: true, isVisible: true },
+    orderBy: { displayOrder: 'asc' },
+  });
+}
+
+export async function getPublishedOpenSourceContributions() {
+  return db.openSourceContribution.findMany({
+    where: { published: true, isVisible: true },
+    orderBy: { displayOrder: 'asc' },
+  });
+}
+
+export async function getPublishedTalks() {
+  return db.talk.findMany({
+    where: { published: true, isVisible: true },
+    orderBy: { displayOrder: 'asc' },
+  });
+}
+
+export async function getSectionVisibility(section: string): Promise<SectionVisibility | null> {
+  return db.sectionVisibility.findUnique({ where: { section } });
+}
 
 type PublicEntity = 'socialLink' | 'experience' | 'skill' | 'project' | 'testimonial';
 type SingletonEntity = 'profile' | 'hero' | 'contactSettings';

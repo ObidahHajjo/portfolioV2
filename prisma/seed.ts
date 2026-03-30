@@ -297,6 +297,8 @@ async function main() {
 
   await db.caseStudy.create({
     data: {
+      slug: 'operations-console',
+      title: 'Operations Console',
       projectId: firstProject.id,
       challenge:
         'Engineering teams lacked a unified operational view, forcing support and delivery workflows across several disconnected tools.',
@@ -305,7 +307,160 @@ async function main() {
       outcomes:
         'Reduced incident triage time and gave release managers a single source of truth during high-pressure launches.',
       mediaAssetIds: [mediaAsset.id],
+      displayOrder: 0,
+      published: true,
+      isVisible: true,
     },
+  });
+
+  const ledPlatformMigrationCaseStudy = await db.caseStudy.upsert({
+    where: { slug: 'led-platform-migration' },
+    update: {
+      title: 'Led Platform Migration',
+      projectId: null,
+      challenge:
+        'A legacy monolith was causing slow release cycles and limiting team autonomy. Multiple products depended on shared infrastructure that created deployment bottlenecks.',
+      solution:
+        'Designed and executed a staged migration to a modular architecture with isolated deployment pipelines. Introduced contract testing and gradual traffic shifting.',
+      outcomes:
+        'Reduced deployment frequency from monthly to daily. Enabled independent team releases and cut rollback time by 80%.',
+      architectureNotes:
+        'Implemented strangler fig pattern with feature flags. Used event-driven communication between modules to reduce coupling.',
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+    create: {
+      slug: 'led-platform-migration',
+      title: 'Led Platform Migration',
+      projectId: null,
+      challenge:
+        'A legacy monolith was causing slow release cycles and limiting team autonomy. Multiple products depended on shared infrastructure that created deployment bottlenecks.',
+      solution:
+        'Designed and executed a staged migration to a modular architecture with isolated deployment pipelines. Introduced contract testing and gradual traffic shifting.',
+      outcomes:
+        'Reduced deployment frequency from monthly to daily. Enabled independent team releases and cut rollback time by 80%.',
+      architectureNotes:
+        'Implemented strangler fig pattern with feature flags. Used event-driven communication between modules to reduce coupling.',
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+  });
+
+  await db.caseStudyMetric.createMany({
+    data: [
+      {
+        caseStudyId: ledPlatformMigrationCaseStudy.id,
+        label: 'Deployment frequency',
+        value: '30x',
+        unit: 'increase',
+        displayOrder: 10,
+      },
+      {
+        caseStudyId: ledPlatformMigrationCaseStudy.id,
+        label: 'Rollback time',
+        value: '-80%',
+        displayOrder: 20,
+      },
+    ],
+  });
+
+  await db.article.upsert({
+    where: { id: 'seed-article-1' },
+    update: {
+      title: 'Building Resilient Deployment Pipelines',
+      summary:
+        'A practical guide to designing deployment systems that handle failure gracefully and enable confident releases.',
+      externalUrl: 'https://blog.example.com/resilient-deployments',
+      publishedAt: new Date('2024-03-15').toISOString(),
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+    create: {
+      id: 'seed-article-1',
+      title: 'Building Resilient Deployment Pipelines',
+      summary:
+        'A practical guide to designing deployment systems that handle failure gracefully and enable confident releases.',
+      externalUrl: 'https://blog.example.com/resilient-deployments',
+      publishedAt: new Date('2024-03-15').toISOString(),
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+  });
+
+  await db.openSourceContribution.upsert({
+    where: { id: 'seed-oss-1' },
+    update: {
+      projectName: 'Prisma',
+      description:
+        'Improved TypeScript type inference for complex relation queries and contributed documentation examples.',
+      contributionType: 'Documentation',
+      repositoryUrl: 'https://github.com/prisma/prisma',
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+    create: {
+      id: 'seed-oss-1',
+      projectName: 'Prisma',
+      description:
+        'Improved TypeScript type inference for complex relation queries and contributed documentation examples.',
+      contributionType: 'Documentation',
+      repositoryUrl: 'https://github.com/prisma/prisma',
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+  });
+
+  await db.talk.upsert({
+    where: { id: 'seed-talk-1' },
+    update: {
+      title: 'From Monolith to Modules: A Migration Story',
+      eventName: 'DevConf 2024',
+      talkDate: new Date('2024-06-20').toISOString(),
+      summary:
+        'Practical lessons from leading a platform migration, including failure modes, communication patterns, and technical decisions.',
+      recordingUrl: 'https://youtube.com/watch?v=example',
+      slidesUrl: 'https://slides.example.com/monolith-to-modules',
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+    create: {
+      id: 'seed-talk-1',
+      title: 'From Monolith to Modules: A Migration Story',
+      eventName: 'DevConf 2024',
+      talkDate: new Date('2024-06-20').toISOString(),
+      summary:
+        'Practical lessons from leading a platform migration, including failure modes, communication patterns, and technical decisions.',
+      recordingUrl: 'https://youtube.com/watch?v=example',
+      slidesUrl: 'https://slides.example.com/monolith-to-modules',
+      displayOrder: 10,
+      published: true,
+      isVisible: true,
+    },
+  });
+
+  await db.sectionVisibility.upsert({
+    where: { section: 'articles' },
+    update: { enabled: true },
+    create: { section: 'articles', enabled: true },
+  });
+
+  await db.sectionVisibility.upsert({
+    where: { section: 'open_source' },
+    update: { enabled: true },
+    create: { section: 'open_source', enabled: true },
+  });
+
+  await db.sectionVisibility.upsert({
+    where: { section: 'talks' },
+    update: { enabled: true },
+    create: { section: 'talks', enabled: true },
   });
 
   await db.seoMetadata.createMany({

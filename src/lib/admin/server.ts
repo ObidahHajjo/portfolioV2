@@ -125,11 +125,17 @@ type ProjectInput = Record<string, unknown> & {
 };
 
 type CaseStudyInput = Record<string, unknown> & {
-  projectId: string;
+  slug: string;
+  title: string;
+  projectId?: string;
   challenge: string;
   solution: string;
   outcomes: string;
+  architectureNotes?: string;
   mediaAssetIds?: string[];
+  displayOrder?: number;
+  published?: boolean;
+  isVisible?: boolean;
 };
 
 type SeoInput = Record<string, unknown> & {
@@ -177,7 +183,7 @@ function getListInclude(entity: AdminListSegment) {
         mediaAsset: true,
       };
     case 'case-studies':
-      return { project: true };
+      return { project: true, metrics: { orderBy: { displayOrder: 'asc' } } };
     default:
       return undefined;
   }
@@ -283,15 +289,29 @@ export async function createEntityRecord(entity: AdminListSegment, data: Record<
     }
     case 'case-studies': {
       const caseStudyData = data as CaseStudyInput;
-      const project = await db.project.findUnique({ where: { id: caseStudyData.projectId } });
 
-      if (!project) {
-        return NextResponse.json({ error: 'Project not found' }, { status: 400 });
+      if (caseStudyData.projectId) {
+        const project = await db.project.findUnique({ where: { id: caseStudyData.projectId } });
+        if (!project) {
+          return NextResponse.json({ error: 'Project not found' }, { status: 400 });
+        }
       }
 
       return db.caseStudy.create({
-        data: { ...caseStudyData, mediaAssetIds: caseStudyData.mediaAssetIds ?? [] },
-        include: { project: true },
+        data: {
+          slug: caseStudyData.slug,
+          title: caseStudyData.title,
+          projectId: caseStudyData.projectId || null,
+          challenge: caseStudyData.challenge,
+          solution: caseStudyData.solution,
+          outcomes: caseStudyData.outcomes,
+          architectureNotes: caseStudyData.architectureNotes,
+          mediaAssetIds: caseStudyData.mediaAssetIds ?? [],
+          displayOrder: caseStudyData.displayOrder ?? 0,
+          published: caseStudyData.published ?? false,
+          isVisible: caseStudyData.isVisible ?? true,
+        },
+        include: { project: true, metrics: true },
       });
     }
     case 'seo-metadata':
@@ -345,16 +365,30 @@ export async function updateEntityRecord(
     }
     case 'case-studies': {
       const caseStudyData = data as CaseStudyInput;
-      const project = await db.project.findUnique({ where: { id: caseStudyData.projectId } });
 
-      if (!project) {
-        return NextResponse.json({ error: 'Project not found' }, { status: 400 });
+      if (caseStudyData.projectId) {
+        const project = await db.project.findUnique({ where: { id: caseStudyData.projectId } });
+        if (!project) {
+          return NextResponse.json({ error: 'Project not found' }, { status: 400 });
+        }
       }
 
       return db.caseStudy.update({
         where: { id },
-        data: { ...caseStudyData, mediaAssetIds: caseStudyData.mediaAssetIds ?? [] },
-        include: { project: true },
+        data: {
+          slug: caseStudyData.slug,
+          title: caseStudyData.title,
+          projectId: caseStudyData.projectId || null,
+          challenge: caseStudyData.challenge,
+          solution: caseStudyData.solution,
+          outcomes: caseStudyData.outcomes,
+          architectureNotes: caseStudyData.architectureNotes,
+          mediaAssetIds: caseStudyData.mediaAssetIds ?? [],
+          displayOrder: caseStudyData.displayOrder,
+          published: caseStudyData.published,
+          isVisible: caseStudyData.isVisible,
+        },
+        include: { project: true, metrics: true },
       });
     }
     case 'seo-metadata':

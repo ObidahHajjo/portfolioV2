@@ -17,6 +17,10 @@ const navItems = [
   { href: '/admin/case-studies', label: 'Case Studies' },
   { href: '/admin/skills', label: 'Skills' },
   { href: '/admin/testimonials', label: 'Testimonials' },
+  { href: '/admin/articles', label: 'Articles' },
+  { href: '/admin/open-source', label: 'Open Source' },
+  { href: '/admin/talks', label: 'Talks' },
+  { href: '/admin/cv', label: 'CV' },
   { href: '/admin/seo-metadata', label: 'SEO Metadata' },
   { href: '/admin/media-assets', label: 'Media Assets' },
 ];

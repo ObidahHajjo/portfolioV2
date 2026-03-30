@@ -141,6 +141,7 @@ export const collectionPageConfigs: Record<
       { name: 'authorName', label: 'Author Name', type: 'text' },
       { name: 'authorRole', label: 'Author Role', type: 'text' },
       { name: 'authorCompany', label: 'Author Company', type: 'text' },
+      { name: 'avatarUrl', label: 'Avatar URL', type: 'text', serializeAs: 'optional' },
       { name: 'quote', label: 'Quote', type: 'textarea' },
       { name: 'displayOrder', label: 'Display Order', type: 'number' },
       { name: 'published', label: 'Published', type: 'boolean' },

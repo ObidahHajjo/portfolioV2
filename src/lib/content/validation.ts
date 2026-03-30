@@ -1,5 +1,31 @@
 import { z } from 'zod';
 
+export const caseStudyMetricSchema = z.object({
+  label: z.string().min(1).max(100),
+  value: z.string().min(1).max(100),
+  unit: z.string().max(50).optional(),
+  displayOrder: z.number().int().min(0).default(0),
+});
+
+export const createCaseStudySchema = z.object({
+  slug: z
+    .string()
+    .min(1)
+    .max(150)
+    .regex(/^[a-z0-9-]+$/, 'Slug must be lowercase alphanumeric with hyphens only'),
+  title: z.string().min(1).max(200),
+  projectId: z.string().optional(),
+  challenge: z.string().min(10),
+  solution: z.string().min(10),
+  outcomes: z.string().min(10),
+  architectureNotes: z.string().optional(),
+  displayOrder: z.number().int().min(0).default(0),
+  published: z.boolean().default(false),
+  isVisible: z.boolean().default(true),
+});
+
+export const updateCaseStudySchema = createCaseStudySchema.partial();
+
 export const ExperienceSchema = z
   .object({
     company: z.string().min(1).max(150),
@@ -61,3 +87,47 @@ export const MediaAssetSchema = z.object({
   ownerType: z.enum(['project', 'case_study', 'profile', 'testimonial']),
   ownerId: z.string().cuid(),
 });
+
+export const cvAssetSchema = z.object({
+  fileName: z.string().min(1).max(255),
+  fileSize: z.number().int().min(1),
+  published: z.boolean().default(false),
+});
+
+export const createArticleSchema = z.object({
+  title: z.string().min(1).max(200),
+  summary: z.string().min(10),
+  externalUrl: z.string().url().max(500),
+  publishedAt: z.string().datetime().optional().nullable(),
+  displayOrder: z.number().int().min(0).default(0),
+  published: z.boolean().default(false),
+  isVisible: z.boolean().default(true),
+});
+
+export const updateArticleSchema = createArticleSchema.partial();
+
+export const createOpenSourceSchema = z.object({
+  projectName: z.string().min(1).max(150),
+  description: z.string().min(10),
+  contributionType: z.string().min(1).max(100),
+  repositoryUrl: z.string().url().max(500).optional(),
+  displayOrder: z.number().int().min(0).default(0),
+  published: z.boolean().default(false),
+  isVisible: z.boolean().default(true),
+});
+
+export const updateOpenSourceSchema = createOpenSourceSchema.partial();
+
+export const createTalkSchema = z.object({
+  title: z.string().min(1).max(200),
+  eventName: z.string().min(1).max(200),
+  talkDate: z.string().datetime(),
+  summary: z.string().min(10),
+  recordingUrl: z.string().url().max(500).optional(),
+  slidesUrl: z.string().url().max(500).optional(),
+  displayOrder: z.number().int().min(0).default(0),
+  published: z.boolean().default(false),
+  isVisible: z.boolean().default(true),
+});
+
+export const updateTalkSchema = createTalkSchema.partial();

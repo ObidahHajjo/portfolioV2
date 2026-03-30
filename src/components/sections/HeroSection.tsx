@@ -1,4 +1,5 @@
 import type { HeroData } from '@/types/portfolio';
+import { CvDownloadButton } from '@/components/ui/CvDownloadButton';
 
 interface HeroSectionProps {
   data: HeroData | null;
@@ -27,13 +28,14 @@ export default function HeroSection({ data }: HeroSectionProps) {
             {data.subHeadline}
           </p>
         </div>
-        <div>
+        <div className="flex flex-wrap gap-4">
           <a
             className="inline-flex min-h-11 items-center rounded-full bg-white px-6 py-3 text-base font-semibold text-slate-950 transition hover:bg-sky-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-950"
             href={data.ctaHref}
           >
             {data.ctaText}
           </a>
+          <CvDownloadButton />
         </div>
       </div>
     </section>

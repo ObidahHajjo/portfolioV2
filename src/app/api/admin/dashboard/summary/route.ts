@@ -13,6 +13,15 @@ export const GET = withAdminAuth(async () => {
     testimonialsDraft,
     socialLinksPublished,
     socialLinksDraft,
+    caseStudiesPublished,
+    caseStudiesDraft,
+    cvHasPublished,
+    articlesPublished,
+    articlesDraft,
+    openSourcePublished,
+    openSourceDraft,
+    talksPublished,
+    talksDraft,
   ] = await Promise.all([
     db.project.count({ where: { published: true } }),
     db.project.count({ where: { published: false } }),
@@ -24,6 +33,15 @@ export const GET = withAdminAuth(async () => {
     db.testimonial.count({ where: { published: false } }),
     db.socialLink.count({ where: { published: true } }),
     db.socialLink.count({ where: { published: false } }),
+    db.caseStudy.count({ where: { published: true } }),
+    db.caseStudy.count({ where: { published: false } }),
+    db.cvAsset.count({ where: { published: true } }),
+    db.article.count({ where: { published: true } }),
+    db.article.count({ where: { published: false } }),
+    db.openSourceContribution.count({ where: { published: true } }),
+    db.openSourceContribution.count({ where: { published: false } }),
+    db.talk.count({ where: { published: true } }),
+    db.talk.count({ where: { published: false } }),
   ]);
 
   return ok({
@@ -32,5 +50,10 @@ export const GET = withAdminAuth(async () => {
     experiences: { published: experiencesPublished, draft: experiencesDraft },
     testimonials: { published: testimonialsPublished, draft: testimonialsDraft },
     socialLinks: { published: socialLinksPublished, draft: socialLinksDraft },
+    caseStudies: { published: caseStudiesPublished, draft: caseStudiesDraft },
+    cv: { hasPublished: cvHasPublished > 0 },
+    articles: { published: articlesPublished, draft: articlesDraft },
+    openSource: { published: openSourcePublished, draft: openSourceDraft },
+    talks: { published: talksPublished, draft: talksDraft },
   });
 });

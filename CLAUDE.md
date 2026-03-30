@@ -9,6 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-03-29
 - PostgreSQL 16 (Prisma Migrate; MinIO for binary assets — referenced only, not uploaded in Phase 2) (003-content-data-model)
 - TypeScript 5.x / Node.js 20 LTS + Next.js 14+ (App Router), Prisma 6.x, Zod, `iron-session`, `minio`, `shadcn/ui`, `react-hook-form`, `@hookform/resolvers`, `bcryptjs` (004-admin-portal-mvp)
 - PostgreSQL 16 (Prisma Migrate — one new table: `login_attempts`); MinIO (S3-compatible, file uploads) (004-admin-portal-mvp)
+- TypeScript 5.x / Node.js 20 LTS + Next.js 14+ (App Router), Prisma 6.x, Zod, `minio` SDK, `shadcn/ui`, `react-hook-form`, `@hookform/resolvers/zod`, `iron-session` (all inherited from Phase 3 — no new packages required) (005-advanced-portfolio)
+- PostgreSQL 16 (one new Prisma migration: `phase4_advanced_portfolio`); MinIO (CV PDF storage — existing bucket reused) (005-advanced-portfolio)
 
 - N/A — Phase 0 is documentation only (001-phase-0-foundation)
 
@@ -28,9 +30,9 @@ tests/
 N/A — Phase 0 is documentation only: Follow standard conventions
 
 ## Recent Changes
+- 005-advanced-portfolio: Added TypeScript 5.x / Node.js 20 LTS + Next.js 14+ (App Router), Prisma 6.x, Zod, `minio` SDK, `shadcn/ui`, `react-hook-form`, `@hookform/resolvers/zod`, `iron-session` (all inherited from Phase 3 — no new packages required)
 - 004-admin-portal-mvp: Added TypeScript 5.x / Node.js 20 LTS + Next.js 14+ (App Router), Prisma 6.x, Zod, `iron-session`, `minio`, `shadcn/ui`, `react-hook-form`, `@hookform/resolvers`, `bcryptjs`
 - 003-content-data-model: Added TypeScript 5.x / Node.js 20 LTS + Next.js 14+ (App Router), Prisma 5, Zod
-- 002-public-portfolio-mvp: Added TypeScript 5.x / Node.js 20 LTS + Next.js 14+ (App Router), Tailwind CSS 3, Prisma 5, PostgreSQL 16
 
 
 <!-- MANUAL ADDITIONS START -->

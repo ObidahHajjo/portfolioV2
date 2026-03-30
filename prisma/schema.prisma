@@ -128,30 +128,54 @@ model ProjectSkill {
 }
 
 model CaseStudy {
-  id            String   @id @default(cuid())
-  projectId     String   @unique
-  challenge     String   @db.Text
-  solution      String   @db.Text
-  outcomes      String   @db.Text
+  id String @id @default(cuid())
+  slug String @unique @db.VarChar(150)
+  title String @db.VarChar(200)
+  projectId String? @unique
+  challenge String @db.Text
+  solution String @db.Text
+  outcomes String @db.Text
+  architectureNotes String? @db.Text
   mediaAssetIds String[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  project       Project  @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  displayOrder Int @default(0)
+  published Boolean @default(false)
+  isVisible Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  metrics CaseStudyMetric[]
 
+  @@index([published, isVisible, displayOrder])
   @@map("case_studies")
 }
 
+model CaseStudyMetric {
+  id String @id @default(cuid())
+  caseStudyId String
+  label String @db.VarChar(100)
+  value String @db.VarChar(100)
+  unit String? @db.VarChar(50)
+  displayOrder Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  caseStudy CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+
+  @@index([caseStudyId, displayOrder])
+  @@map("case_study_metrics")
+}
+
 model Testimonial {
-  id            String   @id @default(cuid())
-  authorName    String   @db.VarChar(100)
-  authorRole    String   @db.VarChar(150)
-  authorCompany String   @db.VarChar(150)
-  quote         String   @db.Text
-  displayOrder  Int      @default(0)
-  published     Boolean  @default(false)
-  isVisible     Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id String @id @default(cuid())
+  authorName String @db.VarChar(100)
+  authorRole String @db.VarChar(150)
+  authorCompany String? @db.VarChar(150)
+  avatarUrl String? @db.VarChar(500)
+  quote String @db.Text
+  displayOrder Int @default(0)
+  published Boolean @default(false)
+  isVisible Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([published, isVisible, displayOrder])
   @@map("testimonials")
@@ -173,18 +197,89 @@ model SeoMetadata {
 }
 
 model MediaAsset {
-  id         String    @id @default(cuid())
-  fileName   String    @db.VarChar(255)
-  storageUrl String    @db.VarChar(500)
-  fileType   String    @db.VarChar(50)
-  fileSize   Int       @default(0)
-  ownerType  String    @db.VarChar(50)
-  ownerId    String    @db.VarChar(36)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  projects   Project[]
+  id String @id @default(cuid())
+  fileName String @db.VarChar(255)
+  storageUrl String @db.VarChar(500)
+  fileType String @db.VarChar(50)
+  fileSize Int @default(0)
+  ownerType String @db.VarChar(50)
+  ownerId String @db.VarChar(36)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  projects Project[]
 
   @@map("media_assets")
+}
+
+model CvAsset {
+  id String @id @default(cuid())
+  fileName String @db.VarChar(255)
+  storageKey String @db.VarChar(500)
+  fileSize Int @default(0)
+  published Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cv_assets")
+}
+
+model Article {
+  id String @id @default(cuid())
+  title String @db.VarChar(200)
+  summary String @db.Text
+  externalUrl String @db.VarChar(500)
+  publishedAt DateTime?
+  displayOrder Int @default(0)
+  published Boolean @default(false)
+  isVisible Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, isVisible, displayOrder])
+  @@map("articles")
+}
+
+model OpenSourceContribution {
+  id String @id @default(cuid())
+  projectName String @db.VarChar(150)
+  description String @db.Text
+  contributionType String @db.VarChar(100)
+  repositoryUrl String? @db.VarChar(500)
+  displayOrder Int @default(0)
+  published Boolean @default(false)
+  isVisible Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, isVisible, displayOrder])
+  @@map("open_source_contributions")
+}
+
+model Talk {
+  id String @id @default(cuid())
+  title String @db.VarChar(200)
+  eventName String @db.VarChar(200)
+  talkDate DateTime
+  summary String @db.Text
+  recordingUrl String? @db.VarChar(500)
+  slidesUrl String? @db.VarChar(500)
+  displayOrder Int @default(0)
+  published Boolean @default(false)
+  isVisible Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([published, isVisible, displayOrder])
+  @@map("talks")
+}
+
+model SectionVisibility {
+  id String @id @default(cuid())
+  section String @unique @db.VarChar(50)
+  enabled Boolean @default(true)
+  updatedAt DateTime @updatedAt
+
+  @@map("section_visibility")
 }
 
 model LoginAttempt {
