@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import type { SocialLinkData } from '@/types/portfolio';
+import type { ContactSettingsData, SocialLinkData } from '@/types/portfolio';
 
 export async function getSocialLinks(): Promise<SocialLinkData[]> {
   try {
@@ -21,5 +21,24 @@ export async function getSocialLinks(): Promise<SocialLinkData[]> {
   } catch (error) {
     console.error('Failed to fetch social links:', error);
     return [];
+  }
+}
+
+export async function getContactSettings(): Promise<ContactSettingsData | null> {
+  try {
+    const settings = await db.contactSettings.findFirst();
+
+    if (!settings) {
+      return null;
+    }
+
+    return {
+      contactEmail: settings.contactEmail,
+      formEnabled: settings.formEnabled,
+      ctaMessage: settings.ctaMessage,
+    };
+  } catch (error) {
+    console.error('Failed to fetch contact settings:', error);
+    return null;
   }
 }

@@ -17,6 +17,10 @@ export type {
   SocialLink,
   Talk,
   Testimonial,
+  ContactSubmission,
+  AnalyticsEvent,
+  ErrorEvent,
+  ErrorAlert,
 } from '@prisma/client';
 
 import type {

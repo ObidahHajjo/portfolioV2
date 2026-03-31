@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import type { AdminSession } from '@/lib/session';
 import { requireSession } from '@/lib/session';
+import { captureError, sanitizeError } from '@/lib/monitoring/capture';
 
 export function withAdminAuth(
   handler: (req: Request, session: AdminSession) => Promise<NextResponse>
@@ -16,7 +17,15 @@ export function withAdminAuth(
       }
 
       return await handler(req, session);
-    } catch {
+    } catch (error) {
+      const sanitized = sanitizeError(error);
+      const url = new URL(req.url);
+      await captureError({
+        surface: 'API',
+        pagePath: url.pathname,
+        message: sanitized.message,
+        stack: sanitized.stack,
+      });
       return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
   };

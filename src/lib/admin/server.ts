@@ -140,6 +140,7 @@ type CaseStudyInput = Record<string, unknown> & {
 
 type SeoInput = Record<string, unknown> & {
   keywords?: string[];
+  canonicalUrl?: string | null;
 };
 
 function getListDelegate(entity: AdminListSegment): any {

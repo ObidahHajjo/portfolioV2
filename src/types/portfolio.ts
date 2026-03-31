@@ -47,6 +47,12 @@ export interface SocialLinkData {
   displayOrder: number;
 }
 
+export interface ContactSettingsData {
+  contactEmail: string;
+  formEnabled: boolean;
+  ctaMessage: string;
+}
+
 export interface PortfolioPageData {
   hero: HeroData | null;
   profile: ProfileData | null;

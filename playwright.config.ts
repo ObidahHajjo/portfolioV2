@@ -21,5 +21,9 @@ export default defineConfig({
     command: 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
+    env: {
+      ...process.env,
+      ANALYTICS_SALT: process.env.ANALYTICS_SALT ?? 'development-e2e-analytics-salt-32chars',
+    },
   },
 });

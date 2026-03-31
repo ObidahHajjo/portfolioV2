@@ -186,6 +186,7 @@ export const collectionPageConfigs: Record<
       { name: 'ogTitle', label: 'OG Title', type: 'text' },
       { name: 'ogDescription', label: 'OG Description', type: 'textarea' },
       { name: 'ogImageUrl', label: 'OG Image URL', type: 'text', serializeAs: 'optional' },
+      { name: 'canonicalUrl', label: 'Canonical URL', type: 'text', serializeAs: 'optional' },
     ],
   },
 };

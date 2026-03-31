@@ -47,3 +47,40 @@ Steps:
 
 Phase 0 now includes the baseline Next.js, Docker, Prisma, and validation
 scaffold required for later feature phases.
+
+## Phase 5 - Production Hardening and Launch
+
+Phase 5 adds production-ready features: SEO optimization, contact form delivery,
+accessibility compliance, performance optimization, error monitoring, and analytics.
+
+### Phase 5 Environment Variables
+
+Add these to your `.env` for Phase 5 features:
+
+| Variable         | Required | Purpose                                         |
+| ---------------- | -------- | ----------------------------------------------- |
+| `SMTP_HOST`      | Yes      | SMTP server hostname                            |
+| `SMTP_PORT`      | No       | SMTP port (default: 587)                        |
+| `SMTP_SECURE`    | No       | Use TLS (default: false)                        |
+| `SMTP_USER`      | Yes      | SMTP authentication username                    |
+| `SMTP_PASS`      | Yes      | SMTP authentication password                    |
+| `SMTP_FROM`      | No       | Sender email address (defaults to SMTP_USER)    |
+| `ANALYTICS_SALT` | Yes      | Random 32+ character string for session hashing |
+
+### Phase 5 Features
+
+- **SEO & Sitemap**: Dynamic metadata, canonical URLs, Open Graph tags, sitemap generation
+- **Contact Form**: Validated submissions with rate limiting (5/hour/IP), SMTP delivery, fallback contact
+- **Accessibility**: WCAG-compliant keyboard navigation, ARIA labels, focus management
+- **Performance**: Lighthouse >= 90, LCP < 2.5s, CLS < 0.1
+- **Error Monitoring**: Automatic error capture, threshold alerting (3 errors/10min triggers email)
+- **Analytics**: Privacy-safe page view tracking with admin dashboard at `/admin/analytics`
+
+### Phase 5 Deployment
+
+1. Ensure all Phase 5 env vars are set
+2. Run database migration: `npx prisma migrate deploy`
+3. Rebuild Docker: `docker compose -f docker/docker-compose.yml up -d --build`
+4. Verify: `/sitemap.xml`, `/api/contact`, `/admin/analytics`
+
+See `docs/phase-5-launch-checklist.md` for complete deployment checklist.

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { getCaseStudyBySlug } from '@/lib/content/queries';
+import { resolveMetadata } from '@/lib/seo/metadata';
 import { MetricCallout } from '@/components/sections/MetricCallout';
 
 export const dynamic = 'force-dynamic';
@@ -18,9 +19,33 @@ export async function generateMetadata({ params }: CaseStudyPageProps): Promise<
     return { title: 'Case Study Not Found' };
   }
 
-  return {
+  const pagePath = `/case-studies/${params.slug}`;
+  const descriptionFallback =
+    caseStudy.outcomes.length > 160 ? `${caseStudy.outcomes.slice(0, 157)}...` : caseStudy.outcomes;
+  const resolved = await resolveMetadata(pagePath, {
     title: caseStudy.title,
-    description: caseStudy.outcomes.substring(0, 160),
+    description: descriptionFallback,
+  });
+
+  return {
+    title: resolved.title,
+    description: resolved.description,
+    alternates: {
+      canonical: resolved.canonicalUrl,
+    },
+    openGraph: {
+      type: 'article',
+      title: resolved.ogTitle,
+      description: resolved.ogDescription,
+      url: resolved.canonicalUrl,
+      images: [{ url: resolved.ogImageUrl }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: resolved.ogTitle,
+      description: resolved.ogDescription,
+      images: [resolved.ogImageUrl],
+    },
   };
 }
 

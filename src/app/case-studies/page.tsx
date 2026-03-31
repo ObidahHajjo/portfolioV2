@@ -1,17 +1,36 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 
 import { getPublishedCaseStudies } from '@/lib/content/queries';
+import { resolveMetadata } from '@/lib/seo/metadata';
 import { CaseStudyCard } from '@/components/sections/CaseStudyCard';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Case Studies',
-  description:
-    'Detailed case studies showcasing problem-solving, engineering decisions, and measurable impact.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const resolved = await resolveMetadata('/case-studies');
+
+  return {
+    title: resolved.title,
+    description: resolved.description,
+    alternates: {
+      canonical: resolved.canonicalUrl,
+    },
+    openGraph: {
+      type: 'website',
+      title: resolved.ogTitle,
+      description: resolved.ogDescription,
+      url: resolved.canonicalUrl,
+      images: [{ url: resolved.ogImageUrl }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: resolved.ogTitle,
+      description: resolved.ogDescription,
+      images: [resolved.ogImageUrl],
+    },
+  };
+}
 
 export default async function CaseStudiesPage() {
   const caseStudies = await getPublishedCaseStudies();

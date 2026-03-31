@@ -75,6 +75,7 @@ export const SeoMetadataSchema = z.object({
   ogTitle: z.string().max(70).optional(),
   ogDescription: z.string().max(200).optional(),
   ogImageUrl: z.string().url().max(500).optional(),
+  canonicalUrl: z.string().url().max(500).optional(),
 });
 
 export const MediaAssetSchema = z.object({
