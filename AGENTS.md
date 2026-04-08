@@ -1,4 +1,5 @@
 ## Project rules
+
 - PLAN.md is the authoritative roadmap.
 - Work strictly phase by phase.
 - Never implement work from a later phase in an earlier phase.
@@ -9,6 +10,7 @@
 - Preserve production-grade standards suitable for a senior developer portfolio.
 
 ## Workflow rules
+
 - Claude is used for Spec Kit planning only.
 - OpenCode is used for implementation only.
 - Do not start coding before /speckit.tasks and /speckit.analyze are complete.

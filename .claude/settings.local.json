@@ -26,7 +26,8 @@
       "Bash(powershell -File \".specify/scripts/powershell/check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
       "Bash(find \"C:/Users/cdax28/Documents/senior-dev-portfolio/src/app/\\(admin\\)\" -type f)",
       "Bash(powershell -File \".specify/scripts/powershell/create-new-feature.ps1\" \"Create the specification for Phase 4 only, based strictly on PLAN.md.\" -Json -ShortName \"advanced-portfolio\" \"Advanced Portfolio Senior Depth\")",
-      "Bash(find C:Userscdax28Documentssenior-dev-portfolio -maxdepth 3 -type f -name *.prisma)"
+      "Bash(find C:Userscdax28Documentssenior-dev-portfolio -maxdepth 3 -type f -name *.prisma)",
+      "Bash(grep:*)"
     ]
   }
 }

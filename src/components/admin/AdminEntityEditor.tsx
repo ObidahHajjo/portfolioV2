@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { z } from 'zod';
+import { useMemo } from 'react';
 
 import { EntityForm } from '@/components/admin/EntityForm';
 import { Button } from '@/components/ui/button';
@@ -124,6 +126,20 @@ export function AdminEntityEditor({
   children?: React.ReactNode;
 }) {
   const router = useRouter();
+  const clientSchema = useMemo(
+    () =>
+      z.preprocess(
+        (raw) => {
+          if (!raw || typeof raw !== 'object') {
+            return raw;
+          }
+
+          return transformSubmission(fields, raw as Record<string, unknown>);
+        },
+        schemaMap[schemaKey] as z.ZodType<Record<string, unknown>>
+      ),
+    [fields, schemaKey]
+  );
 
   return (
     <div className="space-y-6">
@@ -176,7 +192,7 @@ export function AdminEntityEditor({
         </CardHeader>
         <CardContent className="space-y-6">
           <EntityForm
-            schema={schemaMap[schemaKey] as any}
+            schema={clientSchema as any}
             defaultValues={Object.fromEntries(
               fields.map((field) => [
                 field.name,
