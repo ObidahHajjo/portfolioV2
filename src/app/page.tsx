@@ -20,6 +20,8 @@ import type { NavLink } from '@/types/portfolio';
 
 export const revalidate = 300;
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const [hero, profile, skillGroups, experience, projects, socialLinks, contactSettings] =
     await Promise.all([

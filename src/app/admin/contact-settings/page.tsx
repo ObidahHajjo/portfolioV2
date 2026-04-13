@@ -2,6 +2,7 @@ import { AdminEntityEditor } from '@/components/admin/AdminEntityEditor';
 import { singletonPageConfigs } from '@/lib/admin/page-config';
 import { getSingletonRecord } from '@/lib/admin/server';
 
+export const dynamic = 'force-dynamic';
 export default async function AdminContactSettingsPage() {
   const config = singletonPageConfigs['contact-settings'];
   const record = await getSingletonRecord('contact-settings');

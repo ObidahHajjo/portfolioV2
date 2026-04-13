@@ -5,6 +5,7 @@ import { withAdminAuth } from '@/lib/admin/api-helpers';
 import { deleteFromMinio, uploadToMinio } from '@/lib/minio';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
+export const dynamic = 'force-dynamic';
 
 export const GET = withAdminAuth(async () => {
   const cv = await db.cvAsset.findFirst({
