@@ -1,3 +1,4 @@
+import TerminalFrame from '@/components/theme/TerminalFrame';
 import type { HeroData } from '@/types/portfolio';
 
 interface HeroSectionProps {
@@ -12,34 +13,58 @@ export default function HeroSection({ data }: HeroSectionProps) {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative flex min-h-screen items-center overflow-hidden bg-slate-950 px-6 py-24 text-white"
+      className="terminal-section flex min-h-[calc(100vh-4.5rem)] items-center"
       id="hero"
-      style={{ minHeight: '100vh' }}
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.35),_transparent_45%),linear-gradient(135deg,_rgba(15,23,42,1),_rgba(30,41,59,0.92))]"
-      />
-      <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <div className="max-w-3xl min-h-[200px]">
-          <h1
-            className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl"
-            id="hero-heading"
-          >
+      <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-end">
+        <div className="max-w-3xl">
+          <p className="terminal-kicker">&gt; init public-portfolio</p>
+          <h1 className="terminal-heading terminal-text-glow" id="hero-heading">
             {data.headline}
           </h1>
-          <p className="mt-6 max-w-2xl text-xl font-medium leading-8 text-sky-100 sm:text-2xl min-h-[3.5rem]">
-            {data.subHeadline}
+          <p className="terminal-subheading">
+            terminal-style public experience // recruiter-first hierarchy
           </p>
+          <p className="mt-6 max-w-2xl terminal-copy">{data.subHeadline}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a className="terminal-button-primary focus-ring" href={data.ctaHref}>
+              {data.ctaText}
+            </a>
+            <a className="terminal-button-secondary focus-ring" href="#projects">
+              Browse work
+            </a>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-4">
-          <a
-            className="inline-flex min-h-11 items-center rounded-full bg-white px-6 py-3 text-base font-semibold text-slate-950 transition hover:bg-sky-100 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2 focus:ring-offset-slate-950"
-            href={data.ctaHref}
-          >
-            {data.ctaText}
-          </a>
-        </div>
+
+        <TerminalFrame
+          title="~/public/hero.session"
+          label="live"
+          className="max-w-xl lg:ml-auto"
+          contentClassName="space-y-4 font-mono text-sm text-terminal-copy"
+        >
+          <div className="space-y-2">
+            <div className="flex gap-3 text-accent">
+              <span className="text-primary">$</span>
+              <span>whoami</span>
+            </div>
+            <p className="pl-6 text-foreground">{data.headline}</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex gap-3 text-accent">
+              <span className="text-primary">$</span>
+              <span>cat summary.txt</span>
+            </div>
+            <p className="pl-6 terminal-copy">{data.subHeadline}</p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-background/50 p-4">
+            <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+              Primary action
+            </p>
+            <p className="mt-2 text-base text-foreground">{data.ctaText}</p>
+          </div>
+        </TerminalFrame>
       </div>
     </section>
   );

@@ -29,8 +29,9 @@ const navItems = [
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const currentPath = pathname ?? '';
 
-  if (pathname === '/admin/login') {
+  if (currentPath === '/admin/login') {
     return <>{children}</>;
   }
 
@@ -57,7 +58,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           </div>
           <nav className="grid gap-1 p-3">
             {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+              const isActive = currentPath === item.href || currentPath.startsWith(`${item.href}/`);
 
               return (
                 <Link

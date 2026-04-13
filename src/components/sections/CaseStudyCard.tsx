@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { CaseStudy } from '@prisma/client';
+
 import { MetricCallout } from './MetricCallout';
 
 interface CaseStudyCardProps {
@@ -15,14 +16,18 @@ export function CaseStudyCard({ caseStudy }: CaseStudyCardProps) {
   const displayMetrics = caseStudy.metrics.slice(0, 3);
 
   return (
-    <article className="rounded-lg border bg-card p-6 transition-shadow hover:shadow-lg">
+    <article className="terminal-shell rounded-xl p-6 transition hover:-translate-y-0.5 hover:border-primary/30">
       <Link href={`/case-studies/${caseStudy.slug}`} className="block">
-        <h3 className="text-xl font-semibold hover:underline">{caseStudy.title}</h3>
+        <h3 className="text-xl font-semibold text-foreground hover:text-primary hover:underline">
+          {caseStudy.title}
+        </h3>
       </Link>
       {caseStudy.project && (
-        <p className="mt-1 text-sm text-muted-foreground">Project: {caseStudy.project.title}</p>
+        <p className="mt-2 font-mono text-xs uppercase tracking-[0.22em] text-accent">
+          Project: {caseStudy.project.title}
+        </p>
       )}
-      <p className="mt-3 text-sm text-muted-foreground">{excerpt}</p>
+      <p className="mt-4 terminal-copy">{excerpt}</p>
       {displayMetrics.length > 0 && (
         <div className="mt-4 grid grid-cols-3 gap-3">
           {displayMetrics.map((metric) => (

@@ -1,10 +1,15 @@
 import Header from '@/components/layout/Header';
+import MatrixBackdrop from '@/components/theme/MatrixBackdrop';
 import ContactSection from '@/components/sections/ContactSection';
 import AboutSection from '@/components/sections/AboutSection';
+import ArticlesSection from '@/components/sections/ArticlesSection';
 import ExperienceSection from '@/components/sections/ExperienceSection';
 import HeroSection from '@/components/sections/HeroSection';
+import OpenSourceSection from '@/components/sections/OpenSourceSection';
 import ProjectsSection from '@/components/sections/ProjectsSection';
 import SkillsSection from '@/components/sections/SkillsSection';
+import TalksSection from '@/components/sections/TalksSection';
+import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import { getProfileData } from '@/lib/data/about';
 import { getContactSettings, getSocialLinks } from '@/lib/data/contact';
 import { getExperienceEntries } from '@/lib/data/experience';
@@ -50,7 +55,8 @@ export default async function Home() {
   }
 
   return (
-    <>
+    <div className="public-theme min-h-screen">
+      <MatrixBackdrop />
       <Header developerName={profile?.fullName ?? ''} navLinks={navLinks} />
       <main id="main-content" tabIndex={-1}>
         <HeroSection data={hero} />
@@ -58,8 +64,12 @@ export default async function Home() {
         <SkillsSection groups={skillGroups} />
         <ExperienceSection entries={experience} />
         <ProjectsSection projects={projects} />
+        <TestimonialsSection />
+        <ArticlesSection />
+        <OpenSourceSection />
+        <TalksSection />
         <ContactSection links={socialLinks} contactSettings={contactSettings} />
       </main>
-    </>
+    </div>
   );
 }

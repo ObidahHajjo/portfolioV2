@@ -1,4 +1,4 @@
-## Project rules
+﻿## Project rules
 
 - PLAN.md is the authoritative roadmap.
 - Work strictly phase by phase.

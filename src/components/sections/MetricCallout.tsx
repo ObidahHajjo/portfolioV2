@@ -7,12 +7,12 @@ interface MetricCalloutProps {
 
 export function MetricCallout({ label, value, unit }: MetricCalloutProps) {
   return (
-    <div className="rounded-lg border bg-card p-4 text-center">
-      <div className="text-3xl font-bold text-primary">
+    <div className="rounded-lg border border-border bg-background/70 p-4 text-center terminal-box-glow">
+      <div className="text-2xl font-bold text-primary md:text-3xl">
         {value}
-        {unit && <span className="text-lg text-muted-foreground">{unit}</span>}
+        {unit && <span className="ml-1 text-base text-muted-foreground">{unit}</span>}
       </div>
-      <div className="mt-1 text-sm text-muted-foreground">{label}</div>
+      <div className="mt-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">{label}</div>
     </div>
   );
 }

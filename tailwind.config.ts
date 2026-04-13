@@ -47,6 +47,15 @@ const config: Config = {
           DEFAULT: 'var(--card)',
           foreground: 'var(--card-foreground)',
         },
+        terminal: {
+          bg: 'var(--terminal-bg)',
+          panel: 'var(--terminal-panel)',
+          strong: 'var(--terminal-panel-strong)',
+          green: 'var(--terminal-green)',
+          cyan: 'var(--terminal-cyan)',
+          amber: 'var(--terminal-amber)',
+          copy: 'var(--terminal-copy)',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -56,6 +65,11 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-sans)'],
         heading: ['var(--font-heading)', 'var(--font-sans)'],
+        mono: ['var(--font-heading)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
+      boxShadow: {
+        terminal:
+          '0 0 0 1px rgba(84,250,147,0.12), 0 18px 60px rgba(2,10,6,0.6), inset 0 0 24px rgba(84,250,147,0.05)',
       },
     },
   },

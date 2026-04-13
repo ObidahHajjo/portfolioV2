@@ -82,13 +82,8 @@ export default function Header({ developerName, navLinks }: HeaderProps) {
   }, [isOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur min-h-[65px]">
-      <a
-        id={skipLinkId}
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-slate-950 focus:px-4 focus:py-3 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        href="#main-content"
-        onClick={handleSkipLinkClick}
-      >
+    <header className="sticky top-0 z-50 min-h-[65px] border-b border-border bg-background/90 shadow-terminal backdrop-blur">
+      <a id={skipLinkId} className="skip-link" href="#main-content" onClick={handleSkipLinkClick}>
         Skip to main content
       </a>
       <nav
@@ -96,17 +91,18 @@ export default function Header({ developerName, navLinks }: HeaderProps) {
         className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"
       >
         <a
-          className="inline-flex min-h-11 items-center rounded text-sm font-semibold uppercase tracking-[0.24em] text-gray-900 transition hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          className="inline-flex min-h-11 items-center rounded px-2 font-mono text-sm font-semibold uppercase tracking-[0.24em] text-foreground transition hover:text-primary focus-ring"
           href="#hero"
         >
-          {developerName}
+          <span className="text-primary">$</span>
+          <span className="ml-2 truncate">{developerName || 'portfolio'}</span>
         </a>
 
         <ul className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
             <li key={link.anchor}>
               <a
-                className="rounded px-2 py-1 text-gray-600 transition hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                className="rounded px-2 py-1 font-mono text-sm text-muted-foreground transition hover:text-primary focus-ring"
                 href={`#${link.anchor}`}
               >
                 {link.label}
@@ -120,16 +116,16 @@ export default function Header({ developerName, navLinks }: HeaderProps) {
           aria-controls="mobile-menu"
           aria-expanded={isOpen}
           aria-label="Toggle navigation"
-          className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 rounded-md transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 md:hidden"
+          className="inline-flex min-h-11 min-w-11 flex-col items-center justify-center gap-1.5 rounded-md border border-border bg-card/70 transition hover:border-primary/40 hover:text-primary focus-ring md:hidden"
           onClick={handleMobileMenuToggle}
           type="button"
         >
           <span
-            className={`h-0.5 w-6 bg-gray-900 transition ${isOpen ? 'translate-y-2 rotate-45' : ''}`}
+            className={`h-0.5 w-6 bg-current transition ${isOpen ? 'translate-y-2 rotate-45' : ''}`}
           />
-          <span className={`h-0.5 w-6 bg-gray-900 transition ${isOpen ? 'opacity-0' : ''}`} />
+          <span className={`h-0.5 w-6 bg-current transition ${isOpen ? 'opacity-0' : ''}`} />
           <span
-            className={`h-0.5 w-6 bg-gray-900 transition ${isOpen ? '-translate-y-2 -rotate-45' : ''}`}
+            className={`h-0.5 w-6 bg-current transition ${isOpen ? '-translate-y-2 -rotate-45' : ''}`}
           />
         </button>
       </nav>
@@ -137,14 +133,14 @@ export default function Header({ developerName, navLinks }: HeaderProps) {
       <div
         ref={mobileMenuRef}
         aria-hidden={!isOpen}
-        className={`${isOpen ? 'block border-t border-gray-200' : 'hidden'} md:hidden`}
+        className={`${isOpen ? 'block border-t border-border bg-background/95' : 'hidden'} md:hidden`}
         id="mobile-menu"
       >
         <ul className="space-y-1 px-6 py-4">
           {navLinks.map((link) => (
             <li key={link.anchor}>
               <a
-                className="block rounded-md px-3 py-3 text-gray-700 transition hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset"
+                className="block rounded-md border border-transparent px-3 py-3 font-mono text-sm text-muted-foreground transition hover:border-primary/30 hover:bg-card/80 hover:text-primary focus-ring"
                 href={`#${link.anchor}`}
                 onClick={handleMobileLinkClick}
               >

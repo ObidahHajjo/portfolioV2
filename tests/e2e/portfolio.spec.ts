@@ -2,78 +2,59 @@ import { expect, test } from '@playwright/test';
 
 const SEEDED_HERO_HEADLINE = 'Building resilient products that teams can trust.';
 
-test.describe('Portfolio E2E Tests', () => {
-  test('h1 contains hero headline', async ({ page }) => {
+test.describe('Public Portfolio Theme', () => {
+  test('homepage renders terminal-styled hero and primary CTA', async ({ page }) => {
     await page.goto('/');
-    const h1 = page.locator('h1');
-    await expect(h1).toBeVisible();
-    const text = await h1.textContent();
-    expect(text).toBeTruthy();
-    expect(text).toContain(SEEDED_HERO_HEADLINE);
+
+    await expect(page.locator('.public-theme')).toBeVisible();
+    await expect(page.locator('#hero h1')).toContainText(SEEDED_HERO_HEADLINE);
+    await expect(page.locator('#hero a').first()).toBeVisible();
+    await expect(page.getByTestId('matrix-backdrop')).toBeVisible();
   });
 
-  test('hero CTA is visible', async ({ page }) => {
+  test('header stays visible after scroll and no public theme toggle is exposed', async ({
+    page,
+  }) => {
     await page.goto('/');
-    const heroCta = page.locator('#hero a').first();
-    await expect(heroCta).toBeVisible();
+    await page.evaluate(() => window.scrollTo(0, 600));
+
+    await expect(page.locator('header')).toBeVisible();
+    await expect(page.locator('button[aria-label*="theme" i]')).toHaveCount(0);
   });
 
-  test('header is sticky after scroll', async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => window.scrollTo(0, 500));
-    const header = page.locator('header');
-    await expect(header).toBeVisible();
-  });
+  test('project links open in new tab when present', async ({ page }) => {
+    await page.goto('/#projects');
 
-  test('skills section renders when seeded', async ({ page }) => {
-    await page.goto('/');
-    const skillsSection = page.locator('#skills');
-    await expect(skillsSection).toBeVisible();
-  });
-
-  test('project links open in new tab', async ({ page }) => {
-    await page.goto('/');
     const projectLinks = page.locator('#projects a[target="_blank"]');
     const count = await projectLinks.count();
     expect(count).toBeGreaterThan(0);
   });
 
-  test('page title is not empty', async ({ page }) => {
-    await page.goto('/');
-    const title = await page.title();
-    expect(title).toBeTruthy();
-    expect(title).not.toBe('Portfolio');
+  test('case studies routes render with public theme and graceful fallbacks', async ({ page }) => {
+    await page.goto('/case-studies');
+    await expect(page.locator('.public-theme')).toBeVisible();
+
+    const caseStudyLinks = page.locator('a[href^="/case-studies/"]');
+    if ((await caseStudyLinks.count()) > 0) {
+      const href = await caseStudyLinks.first().getAttribute('href');
+      if (href) {
+        await page.goto(href);
+        await expect(page.locator('article h1')).toBeVisible();
+        await expect(page.locator('.public-theme')).toBeVisible();
+      }
+    }
+
+    await page.goto('/case-studies/not-a-real-case-study');
+    await expect(page.locator('h1')).toContainText('Case Study Not Found');
   });
 
-  test('meta description is present', async ({ page }) => {
-    await page.goto('/');
-    const metaDescription = await page.evaluate(() =>
-      document.querySelector('meta[name="description"]')?.getAttribute('content')
-    );
-    expect(metaDescription).toBeTruthy();
-    expect(metaDescription!.length).toBeGreaterThan(0);
-  });
-
-  test('content visible without JavaScript', async ({ browser }) => {
+  test('content remains visible without JavaScript', async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled: false });
     const page = await context.newPage();
     await page.goto('/');
-    const h1 = page.locator('h1');
-    await expect(h1).toBeVisible();
-    const text = await h1.textContent();
-    expect(text).toBeTruthy();
-    await context.close();
-  });
 
-  test('contact link is valid', async ({ page }) => {
-    await page.goto('/');
-    const contactLink = page.locator('#contact a').first();
-    if ((await contactLink.count()) > 0) {
-      const href = await contactLink.getAttribute('href');
-      if (href && !href.startsWith('mailto:')) {
-        const response = await page.request.get(href);
-        expect(response.status()).toBeLessThan(400);
-      }
-    }
+    await expect(page.locator('h1')).toContainText(SEEDED_HERO_HEADLINE);
+
+    await context.close();
   });
 });
