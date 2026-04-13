@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { minioClient } from '@/lib/minio';
 
+export const dynamic = 'force-dynamic';
 export async function GET() {
   const cv = await db.cvAsset.findFirst({
     where: { published: true },
