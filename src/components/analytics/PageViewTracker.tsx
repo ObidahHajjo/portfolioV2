@@ -10,13 +10,14 @@ interface PageViewTrackerProps {
 export default function PageViewTracker({ enabled = true }: PageViewTrackerProps) {
   const pathname = usePathname();
   const trackedRef = useRef<string | null>(null);
+  const currentPath = pathname ?? '/';
 
   useEffect(() => {
     if (!enabled) return;
-    if (pathname.startsWith('/admin')) return;
-    if (trackedRef.current === pathname) return;
+    if (currentPath.startsWith('/admin')) return;
+    if (trackedRef.current === currentPath) return;
 
-    trackedRef.current = pathname;
+    trackedRef.current = currentPath;
 
     const trackPageView = () => {
       fetch('/api/analytics/page-view', {
@@ -24,7 +25,7 @@ export default function PageViewTracker({ enabled = true }: PageViewTrackerProps
         headers: { 'Content-Type': 'application/json' },
         keepalive: true,
         body: JSON.stringify({
-          pagePath: pathname,
+          pagePath: currentPath,
           referrer: document.referrer || undefined,
         }),
       }).catch(() => {
@@ -34,7 +35,7 @@ export default function PageViewTracker({ enabled = true }: PageViewTrackerProps
 
     const timeoutId = setTimeout(trackPageView, 100);
     return () => clearTimeout(timeoutId);
-  }, [pathname, enabled]);
+  }, [currentPath, enabled]);
 
   return null;
 }

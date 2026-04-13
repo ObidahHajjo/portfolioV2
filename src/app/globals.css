@@ -7,6 +7,7 @@
 :root {
   --font-sans:
     'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --focus-ring-color: #3b82f6;
   --focus-ring-offset: 2px;
 }
@@ -23,9 +24,10 @@ html {
 
 @layer base {
   .theme {
-    --font-heading: var(--font-sans);
+    --font-heading: var(--font-heading);
     --font-sans: var(--font-sans);
   }
+
   :root {
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -59,7 +61,15 @@ html {
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    --terminal-bg: #03120c;
+    --terminal-panel: #091811;
+    --terminal-panel-strong: #0d2218;
+    --terminal-green: #54fa93;
+    --terminal-cyan: #35d4c6;
+    --terminal-amber: #f1c75b;
+    --terminal-copy: rgba(216, 255, 231, 0.84);
   }
+
   .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
@@ -93,14 +103,27 @@ html {
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
   }
+
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  body:has(.public-theme) {
+    background-color: var(--terminal-bg);
+  }
+
   html {
     @apply font-sans;
+  }
+
+  ::selection {
+    background: rgba(84, 250, 147, 0.2);
+    color: currentColor;
   }
 }
 
@@ -134,16 +157,228 @@ html {
 }
 
 @layer components {
+  .public-theme {
+    --background: var(--terminal-bg);
+    --foreground: #d8ffe7;
+    --card: var(--terminal-panel);
+    --card-foreground: #e5ffef;
+    --popover: var(--terminal-panel);
+    --popover-foreground: #e5ffef;
+    --primary: var(--terminal-green);
+    --primary-foreground: #03120c;
+    --secondary: #10261c;
+    --secondary-foreground: #c7f8d6;
+    --muted: #0f2118;
+    --muted-foreground: #86b69a;
+    --accent: var(--terminal-cyan);
+    --accent-foreground: #03120c;
+    --destructive: #ff6a7a;
+    --border: rgba(84, 250, 147, 0.18);
+    --input: rgba(84, 250, 147, 0.14);
+    --ring: var(--terminal-green);
+    --focus-ring-color: #6ef7a6;
+    --focus-ring-offset: 3px;
+    @apply relative isolate overflow-hidden bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at top, rgba(84, 250, 147, 0.14), transparent 34%),
+      linear-gradient(180deg, #03120c 0%, #051811 48%, #03120c 100%);
+  }
+
+  .public-theme::before,
+  .public-theme::after {
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+  }
+
+  .public-theme::before {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(84, 250, 147, 0.016) 2px,
+      rgba(84, 250, 147, 0.016) 4px
+    );
+    opacity: 0.55;
+  }
+
+  .public-theme::after {
+    background-image:
+      linear-gradient(rgba(84, 250, 147, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(53, 212, 198, 0.04) 1px, transparent 1px);
+    background-size:
+      100% 80px,
+      80px 100%;
+    opacity: 0.2;
+  }
+
+  .public-theme main,
+  .public-theme header,
+  .public-theme section,
+  .public-theme article,
+  .public-theme nav {
+    position: relative;
+    z-index: 1;
+  }
+
   .skip-link {
     @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50;
-    @apply focus:rounded-md focus:bg-slate-950 focus:px-4 focus:py-3;
-    @apply focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg;
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+    @apply focus:rounded-md focus:border focus:px-4 focus:py-3;
+    @apply focus:text-sm focus:font-semibold focus:text-primary focus:shadow-terminal;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+    background: rgba(4, 18, 12, 0.98);
+    border-color: rgba(84, 250, 147, 0.28);
+  }
+
+  .terminal-section {
+    @apply relative px-6 py-16 md:py-24;
+  }
+
+  .terminal-shell {
+    background: linear-gradient(180deg, rgba(9, 24, 17, 0.92), rgba(5, 16, 12, 0.88));
+    border: 1px solid rgba(84, 250, 147, 0.18);
+    box-shadow:
+      0 0 0 1px rgba(84, 250, 147, 0.08),
+      0 18px 60px rgba(2, 10, 6, 0.65),
+      inset 0 0 24px rgba(84, 250, 147, 0.04);
+    backdrop-filter: blur(14px);
+  }
+
+  .terminal-frame {
+    @apply terminal-shell overflow-hidden rounded-2xl;
+  }
+
+  .terminal-frame-header {
+    @apply flex items-center justify-between gap-4 border-b px-4 py-3 text-[0.68rem] uppercase tracking-[0.24em] text-muted-foreground;
+    border-color: rgba(84, 250, 147, 0.16);
+    background: rgba(4, 18, 12, 0.92);
+  }
+
+  .terminal-frame-dots {
+    @apply flex items-center gap-2;
+  }
+
+  .terminal-frame-dot {
+    @apply size-2.5 rounded-full;
+  }
+
+  .terminal-frame-title {
+    @apply truncate font-mono;
+  }
+
+  .terminal-frame-label {
+    color: var(--terminal-cyan);
+  }
+
+  .terminal-frame-body {
+    @apply px-6 py-6 md:px-8 md:py-8;
+  }
+
+  .terminal-kicker {
+    @apply mb-4 font-mono text-xs uppercase tracking-[0.3em] text-accent;
+  }
+
+  .terminal-heading {
+    color: var(--foreground);
+    font-family: var(--font-heading);
+    font-size: clamp(2.3rem, 4vw, 4.75rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+  }
+
+  .terminal-subheading {
+    @apply mt-2 max-w-3xl font-mono text-xs uppercase tracking-[0.28em] text-muted-foreground;
+  }
+
+  .terminal-copy {
+    color: var(--terminal-copy);
+    @apply text-base leading-8 md:text-lg;
+  }
+
+  .terminal-muted {
+    color: var(--muted-foreground);
+  }
+
+  .terminal-prose p + p {
+    @apply mt-4;
+  }
+
+  .terminal-link {
+    @apply underline-offset-4 transition hover:text-primary hover:underline;
+  }
+
+  .terminal-chip {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-[0.18em];
+    background: rgba(84, 250, 147, 0.08);
+    border-color: rgba(84, 250, 147, 0.18);
+    color: var(--secondary-foreground);
+  }
+
+  .terminal-button-primary {
+    @apply inline-flex min-h-11 items-center justify-center rounded-md border px-5 py-3 text-sm font-semibold transition;
+    background: rgba(84, 250, 147, 0.1);
+    border-color: rgba(84, 250, 147, 0.22);
+    box-shadow: 0 0 22px rgba(84, 250, 147, 0.14);
+    color: var(--primary);
+  }
+
+  .terminal-button-primary:hover {
+    background: rgba(84, 250, 147, 0.16);
+    border-color: rgba(84, 250, 147, 0.34);
+  }
+
+  .terminal-button-secondary {
+    @apply inline-flex min-h-11 items-center justify-center rounded-md border px-5 py-3 text-sm font-semibold transition;
+    background: rgba(9, 24, 17, 0.86);
+    border-color: rgba(53, 212, 198, 0.16);
+    color: var(--foreground);
+  }
+
+  .terminal-button-secondary:hover {
+    border-color: rgba(53, 212, 198, 0.34);
+    color: var(--accent);
+  }
+
+  .terminal-input {
+    @apply w-full rounded-lg border px-4 py-3 text-sm outline-none transition;
+    background: rgba(4, 18, 12, 0.82);
+    border-color: rgba(84, 250, 147, 0.14);
+    color: var(--foreground);
+  }
+
+  .terminal-input::placeholder {
+    color: rgba(134, 182, 154, 0.72);
+  }
+
+  .terminal-input:disabled {
+    opacity: 0.55;
+  }
+
+  .terminal-alert {
+    @apply rounded-xl border p-4;
+    background: rgba(4, 18, 12, 0.88);
   }
 }
 
 @layer utilities {
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+    --tw-ring-offset-color: var(--background);
+  }
+
+  .terminal-text-glow {
+    text-shadow:
+      0 0 12px rgba(84, 250, 147, 0.28),
+      0 0 42px rgba(84, 250, 147, 0.08);
+  }
+
+  .terminal-box-glow {
+    box-shadow:
+      0 0 0 1px rgba(84, 250, 147, 0.12),
+      0 18px 60px rgba(2, 10, 6, 0.65),
+      inset 0 0 18px rgba(84, 250, 147, 0.05);
   }
 }

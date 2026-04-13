@@ -2,9 +2,10 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { MetricCallout } from '@/components/sections/MetricCallout';
+import TerminalFrame from '@/components/theme/TerminalFrame';
 import { getCaseStudyBySlug } from '@/lib/content/queries';
 import { resolveMetadata } from '@/lib/seo/metadata';
-import { MetricCallout } from '@/components/sections/MetricCallout';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,58 +58,68 @@ export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
   }
 
   return (
-    <div className="container py-12">
-      <Link href="/case-studies" className="text-sm text-muted-foreground hover:underline">
-        ← All Case Studies
-      </Link>
+    <div className="public-theme min-h-screen">
+      <section className="terminal-section">
+        <div className="mx-auto max-w-5xl">
+          <Link href="/case-studies" className="terminal-button-secondary focus-ring inline-flex">
+            Back to case studies
+          </Link>
 
-      <article className="mt-6">
-        <h1 className="text-3xl font-bold">{caseStudy.title}</h1>
+          <article className="mt-6">
+            <TerminalFrame title={`~/public/case-studies/${params.slug}.md`} label="Long-form">
+              <h1 className="terminal-heading text-[clamp(2rem,3.4vw,3.5rem)]">
+                {caseStudy.title}
+              </h1>
 
-        {caseStudy.project && (
-          <p className="mt-2 text-muted-foreground">
-            Project:{' '}
-            <Link href={`/#projects`} className="text-primary hover:underline">
-              {caseStudy.project.title}
-            </Link>
-          </p>
-        )}
+              {caseStudy.project && (
+                <p className="mt-4 font-mono text-xs uppercase tracking-[0.24em] text-accent">
+                  Project:{' '}
+                  <Link href={`/#projects`} className="terminal-link">
+                    {caseStudy.project.title}
+                  </Link>
+                </p>
+              )}
 
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">The Challenge</h2>
-          <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{caseStudy.challenge}</p>
-        </section>
+              <section className="mt-10">
+                <h2 className="text-2xl font-semibold text-foreground">The Challenge</h2>
+                <p className="mt-3 whitespace-pre-wrap terminal-copy">{caseStudy.challenge}</p>
+              </section>
 
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">The Solution</h2>
-          <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{caseStudy.solution}</p>
-        </section>
+              <section className="mt-10">
+                <h2 className="text-2xl font-semibold text-foreground">The Solution</h2>
+                <p className="mt-3 whitespace-pre-wrap terminal-copy">{caseStudy.solution}</p>
+              </section>
 
-        <section className="mt-8">
-          <h2 className="text-xl font-semibold">The Outcome</h2>
-          <p className="mt-2 whitespace-pre-wrap text-muted-foreground">{caseStudy.outcomes}</p>
-        </section>
+              <section className="mt-10">
+                <h2 className="text-2xl font-semibold text-foreground">The Outcome</h2>
+                <p className="mt-3 whitespace-pre-wrap terminal-copy">{caseStudy.outcomes}</p>
+              </section>
 
-        {caseStudy.architectureNotes && (
-          <section className="mt-8">
-            <h2 className="text-xl font-semibold">Architecture &amp; Decisions</h2>
-            <p className="mt-2 whitespace-pre-wrap text-muted-foreground">
-              {caseStudy.architectureNotes}
-            </p>
-          </section>
-        )}
+              {caseStudy.architectureNotes && (
+                <section className="mt-10">
+                  <h2 className="text-2xl font-semibold text-foreground">
+                    Architecture &amp; Decisions
+                  </h2>
+                  <p className="mt-3 whitespace-pre-wrap terminal-copy">
+                    {caseStudy.architectureNotes}
+                  </p>
+                </section>
+              )}
 
-        {caseStudy.metrics.length > 0 && (
-          <section className="mt-8">
-            <h2 className="text-xl font-semibold">Key Metrics</h2>
-            <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-              {caseStudy.metrics.map((metric) => (
-                <MetricCallout key={metric.id} {...metric} />
-              ))}
-            </div>
-          </section>
-        )}
-      </article>
+              {caseStudy.metrics.length > 0 && (
+                <section className="mt-10">
+                  <h2 className="text-2xl font-semibold text-foreground">Key Metrics</h2>
+                  <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+                    {caseStudy.metrics.map((metric) => (
+                      <MetricCallout key={metric.id} {...metric} />
+                    ))}
+                  </div>
+                </section>
+              )}
+            </TerminalFrame>
+          </article>
+        </div>
+      </section>
     </div>
   );
 }

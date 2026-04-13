@@ -1,3 +1,4 @@
+import TerminalFrame from '@/components/theme/TerminalFrame';
 import type { ProfileData } from '@/types/portfolio';
 
 interface AboutSectionProps {
@@ -10,19 +11,21 @@ export default function AboutSection({ data }: AboutSectionProps) {
   }
 
   return (
-    <section aria-labelledby="about-heading" className="px-6 py-16 md:py-24" id="about">
+    <section aria-labelledby="about-heading" className="terminal-section" id="about">
       <div className="mx-auto max-w-4xl">
-        <h2 className="mb-6 text-3xl font-bold text-gray-900" id="about-heading">
-          About
-        </h2>
-        <p className="mb-6 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
-          {data.tagline}
-        </p>
-        {data.bio.split('\n\n').map((paragraph, index) => (
-          <p className="mb-4 text-lg leading-relaxed text-gray-700" key={index}>
-            {paragraph}
-          </p>
-        ))}
+        <TerminalFrame title="~/public/about.md" label="About">
+          {data.tagline ? <p className="terminal-kicker">{data.tagline}</p> : null}
+          <h2 className="terminal-heading text-[clamp(1.9rem,3vw,3rem)]" id="about-heading">
+            About
+          </h2>
+          <div className="terminal-prose mt-6">
+            {data.bio.split('\n\n').map((paragraph, index) => (
+              <p className="terminal-copy" key={index}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </TerminalFrame>
       </div>
     </section>
   );

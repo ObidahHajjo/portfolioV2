@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useId } from 'react';
+import { useId, useState } from 'react';
+
+import TerminalFrame from '@/components/theme/TerminalFrame';
 import type { ContactSettingsData, SocialLinkData } from '@/types/portfolio';
 
 interface ContactSectionProps {
@@ -22,28 +24,49 @@ interface FormErrors {
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error' | 'rate_limited';
 
+function ContactLinks({ links }: { links: SocialLinkData[] }) {
+  return (
+    <div className="flex flex-wrap justify-center gap-3">
+      {links.map((link) => {
+        const isMailto = link.url.startsWith('mailto:');
+        return (
+          <a
+            aria-label={link.platform}
+            className="terminal-button-secondary focus-ring"
+            href={link.url}
+            key={`${link.platform}-${link.displayOrder}`}
+            rel={isMailto ? undefined : 'noopener noreferrer'}
+            target={isMailto ? undefined : '_blank'}
+          >
+            {link.platform}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function ContactSection({ links, contactSettings }: ContactSectionProps) {
   const formId = useId();
   const nameErrorId = `${formId}-name-error`;
   const emailErrorId = `${formId}-email-error`;
   const messageErrorId = `${formId}-message-error`;
-  const statusMessageId = `${formId}-status`;
 
   const [form, setForm] = useState<FormState>({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [fallbackEmail, setFallbackEmail] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setStatus('submitting');
     setErrors({});
     setFallbackEmail(null);
@@ -99,227 +122,212 @@ export default function ContactSection({ links, contactSettings }: ContactSectio
     }
 
     return (
-      <section id="contact" aria-labelledby="contact-heading" className="px-6 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 id="contact-heading" className="mb-4 text-3xl font-bold text-gray-900">
-            Get In Touch
-          </h2>
-          <p className="mb-8 text-gray-600">
-            Feel free to reach out through any of the following channels.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            {links.map((link) => {
-              const isMailto = link.url.startsWith('mailto:');
-              return (
-                <a
-                  aria-label={link.platform}
-                  className="inline-flex min-h-11 items-center rounded-full bg-slate-950 px-6 py-3 text-base font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  href={link.url}
-                  key={`${link.platform}-${link.displayOrder}`}
-                  rel={isMailto ? undefined : 'noopener noreferrer'}
-                  target={isMailto ? undefined : '_blank'}
-                >
-                  {link.platform}
-                </a>
-              );
-            })}
-          </div>
+      <section id="contact" aria-labelledby="contact-heading" className="terminal-section">
+        <div className="mx-auto max-w-4xl">
+          <TerminalFrame title="~/public/contact.links" label="Contact">
+            <div className="text-center">
+              <p className="terminal-kicker">contact.init()</p>
+              <h2 id="contact-heading" className="terminal-heading text-[clamp(1.9rem,3vw,3rem)]">
+                Get In Touch
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl terminal-copy">
+                Reach out through any of the channels below. The contact path stays obvious even
+                inside the terminal-style presentation.
+              </p>
+            </div>
+            <div className="mt-8">
+              <ContactLinks links={links} />
+            </div>
+          </TerminalFrame>
         </div>
       </section>
     );
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="px-6 py-16">
-      <div className="mx-auto max-w-2xl">
-        <div className="text-center mb-8">
-          <h2 id="contact-heading" className="mb-4 text-3xl font-bold text-gray-900">
-            Get In Touch
-          </h2>
-          <p className="text-gray-600">{contactSettings.ctaMessage || 'Feel free to reach out.'}</p>
-        </div>
-
-        {status === 'success' && (
-          <div
-            data-testid="success-message"
-            className="mb-6 rounded-lg bg-green-50 p-4 text-center"
-            role="status"
-            aria-live="polite"
-          >
-            <p className="text-green-800 font-medium">
-              Thanks - your message was sent successfully.
+    <section id="contact" aria-labelledby="contact-heading" className="terminal-section">
+      <div className="mx-auto max-w-4xl">
+        <TerminalFrame title="~/public/contact.form" label="Contact">
+          <div className="text-center">
+            <p className="terminal-kicker">contact.init()</p>
+            <h2 id="contact-heading" className="terminal-heading text-[clamp(1.9rem,3vw,3rem)]">
+              Get In Touch
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl terminal-copy">
+              {contactSettings.ctaMessage || 'Feel free to reach out.'}
             </p>
-            <button
-              onClick={handleReset}
-              className="mt-3 text-sm text-green-700 underline hover:no-underline"
+          </div>
+
+          {status === 'success' && (
+            <div
+              data-testid="success-message"
+              className="terminal-alert mt-8 border-emerald-400/30 text-center"
+              role="status"
+              aria-live="polite"
             >
-              Send Another Message
-            </button>
-          </div>
-        )}
-
-        {status === 'rate_limited' && (
-          <div
-            data-testid="rate-limit-error"
-            className="mb-6 rounded-lg bg-yellow-50 p-4 text-center"
-            role="alert"
-            aria-live="assertive"
-          >
-            <p className="text-yellow-800 font-medium">
-              Too many submissions. Please try again later.
-            </p>
-          </div>
-        )}
-
-        {status === 'error' && (
-          <div
-            data-testid="error-message"
-            className="mb-6 rounded-lg bg-red-50 p-4 text-center"
-            role="alert"
-            aria-live="assertive"
-          >
-            <p className="text-red-800 font-medium">We could not send your message right now.</p>
-            {fallbackEmail && (
-              <p className="mt-2 text-red-700" data-testid="fallback-email">
-                Please email us directly at{' '}
-                <a href={`mailto:${fallbackEmail}`} className="underline hover:no-underline">
-                  {fallbackEmail}
-                </a>
+              <p className="font-medium text-emerald-200">
+                Thanks - your message was sent successfully.
               </p>
-            )}
-          </div>
-        )}
-
-        {status !== 'success' && status !== 'rate_limited' && (
-          <form onSubmit={handleSubmit} aria-label="Contact form" className="space-y-6" noValidate>
-            <div>
-              <label
-                htmlFor={`${formId}-name`}
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Name
-              </label>
-              <input
-                id={`${formId}-name`}
-                name="name"
-                type="text"
-                value={form.name}
-                onChange={handleChange}
-                disabled={status === 'submitting'}
-                aria-required="true"
-                aria-invalid={!!errors.name}
-                aria-describedby={errors.name ? nameErrorId : undefined}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                placeholder="Your name"
-              />
-              {errors.name && (
-                <p
-                  id={nameErrorId}
-                  data-testid="name-error"
-                  className="mt-1 text-sm text-red-600"
-                  role="alert"
-                >
-                  {errors.name}
-                </p>
-              )}
+              <button onClick={handleReset} className="terminal-link mt-3 text-sm" type="button">
+                Send Another Message
+              </button>
             </div>
+          )}
 
-            <div>
-              <label
-                htmlFor={`${formId}-email`}
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email
-              </label>
-              <input
-                id={`${formId}-email`}
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={handleChange}
-                disabled={status === 'submitting'}
-                aria-required="true"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? emailErrorId : undefined}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                placeholder="your@email.com"
-              />
-              {errors.email && (
-                <p
-                  id={emailErrorId}
-                  data-testid="email-error"
-                  className="mt-1 text-sm text-red-600"
-                  role="alert"
-                >
-                  {errors.email}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor={`${formId}-message`}
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Message
-              </label>
-              <textarea
-                id={`${formId}-message`}
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                disabled={status === 'submitting'}
-                rows={5}
-                aria-required="true"
-                aria-invalid={!!errors.message}
-                aria-describedby={errors.message ? messageErrorId : undefined}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 resize-y"
-                placeholder="Your message..."
-              />
-              {errors.message && (
-                <p
-                  id={messageErrorId}
-                  data-testid="message-error"
-                  className="mt-1 text-sm text-red-600"
-                  role="alert"
-                >
-                  {errors.message}
-                </p>
-              )}
-            </div>
-
-            <button
-              type="submit"
-              disabled={status === 'submitting'}
-              className="w-full rounded-lg bg-slate-950 px-6 py-3 text-base font-semibold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          {status === 'rate_limited' && (
+            <div
+              data-testid="rate-limit-error"
+              className="terminal-alert mt-8 border-amber-300/30 text-center"
+              role="alert"
+              aria-live="assertive"
             >
-              {status === 'submitting' ? 'Sending...' : 'Send Message'}
-            </button>
-          </form>
-        )}
-
-        {links.length > 0 && (
-          <div className="mt-8 pt-8 border-t border-gray-200">
-            <p className="text-center text-sm text-gray-500 mb-4">Or connect with me on:</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {links.map((link) => {
-                const isMailto = link.url.startsWith('mailto:');
-                return (
-                  <a
-                    aria-label={link.platform}
-                    className="inline-flex items-center rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    href={link.url}
-                    key={`${link.platform}-${link.displayOrder}`}
-                    rel={isMailto ? undefined : 'noopener noreferrer'}
-                    target={isMailto ? undefined : '_blank'}
-                  >
-                    {link.platform}
-                  </a>
-                );
-              })}
+              <p className="font-medium text-amber-200">
+                Too many submissions. Please try again later.
+              </p>
             </div>
-          </div>
-        )}
+          )}
+
+          {status === 'error' && (
+            <div
+              data-testid="error-message"
+              className="terminal-alert mt-8 border-red-400/30 text-center"
+              role="alert"
+              aria-live="assertive"
+            >
+              <p className="font-medium text-red-200">We could not send your message right now.</p>
+              {fallbackEmail && (
+                <p className="mt-2 terminal-copy" data-testid="fallback-email">
+                  Please email us directly at{' '}
+                  <a href={`mailto:${fallbackEmail}`} className="terminal-link">
+                    {fallbackEmail}
+                  </a>
+                </p>
+              )}
+            </div>
+          )}
+
+          {status !== 'success' && status !== 'rate_limited' && (
+            <form
+              onSubmit={handleSubmit}
+              aria-label="Contact form"
+              className="mt-8 space-y-6"
+              noValidate
+            >
+              <div>
+                <label
+                  htmlFor={`${formId}-name`}
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Name
+                </label>
+                <input
+                  id={`${formId}-name`}
+                  name="name"
+                  type="text"
+                  value={form.name}
+                  onChange={handleChange}
+                  disabled={status === 'submitting'}
+                  aria-required="true"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? nameErrorId : undefined}
+                  className="terminal-input focus-ring"
+                  placeholder="Your name"
+                />
+                {errors.name && (
+                  <p
+                    id={nameErrorId}
+                    data-testid="name-error"
+                    className="mt-2 text-sm text-red-300"
+                    role="alert"
+                  >
+                    {errors.name}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor={`${formId}-email`}
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Email
+                </label>
+                <input
+                  id={`${formId}-email`}
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  disabled={status === 'submitting'}
+                  aria-required="true"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? emailErrorId : undefined}
+                  className="terminal-input focus-ring"
+                  placeholder="your@email.com"
+                />
+                {errors.email && (
+                  <p
+                    id={emailErrorId}
+                    data-testid="email-error"
+                    className="mt-2 text-sm text-red-300"
+                    role="alert"
+                  >
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor={`${formId}-message`}
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Message
+                </label>
+                <textarea
+                  id={`${formId}-message`}
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
+                  disabled={status === 'submitting'}
+                  rows={5}
+                  aria-required="true"
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? messageErrorId : undefined}
+                  className="terminal-input focus-ring resize-y"
+                  placeholder="Your message..."
+                />
+                {errors.message && (
+                  <p
+                    id={messageErrorId}
+                    data-testid="message-error"
+                    className="mt-2 text-sm text-red-300"
+                    role="alert"
+                  >
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="terminal-button-primary focus-ring w-full disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {status === 'submitting' ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
+          )}
+
+          {links.length > 0 && (
+            <div className="mt-8 border-t border-border pt-8">
+              <p className="mb-4 text-center text-sm uppercase tracking-[0.24em] text-muted-foreground">
+                Alternate channels
+              </p>
+              <ContactLinks links={links} />
+            </div>
+          )}
+        </TerminalFrame>
       </div>
     </section>
   );

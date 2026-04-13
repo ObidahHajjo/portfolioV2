@@ -6,25 +6,25 @@ This project aims to build a **production-grade senior developer portfolio platf
 
 The platform consists of two primary surfaces:
 
-* **Public Portfolio Website**: A high-quality, recruiter-optimized interface showcasing experience, projects, and technical expertise.
-* **Admin Portal**: A secure internal dashboard for managing all portfolio content dynamically (CRUD, ordering, publishing).
+- **Public Portfolio Website**: A high-quality, recruiter-optimized interface showcasing experience, projects, and technical expertise.
+- **Admin Portal**: A secure internal dashboard for managing all portfolio content dynamically (CRUD, ordering, publishing).
 
 The system will follow a **Spec-Driven Development workflow using Spec Kit**, ensuring that each phase is formally defined, clarified, planned, and implemented with precision.
 
 ### Core Objectives
 
-* Present a **senior-level engineering profile** with strong credibility and business impact
-* Enable **fully dynamic content management** via admin (no hardcoded UI content)
-* Maintain **high standards of performance, SEO, accessibility, and security**
-* Ensure **clean architecture, modularity, and long-term maintainability**
+- Present a **senior-level engineering profile** with strong credibility and business impact
+- Enable **fully dynamic content management** via admin (no hardcoded UI content)
+- Maintain **high standards of performance, SEO, accessibility, and security**
+- Ensure **clean architecture, modularity, and long-term maintainability**
 
 ### Guiding Principles
 
-* All public content must be editable via the admin portal unless explicitly static
-* Clear separation between presentation (UI) and content management (data layer)
-* Strong typing, validation, and consistent data contracts
-* Mobile-first, responsive, and accessible design
-* Production-first mindset (not a demo project)
+- All public content must be editable via the admin portal unless explicitly static
+- Clear separation between presentation (UI) and content management (data layer)
+- Strong typing, validation, and consistent data contracts
+- Mobile-first, responsive, and accessible design
+- Production-first mindset (not a demo project)
 
 ---
 
@@ -49,17 +49,17 @@ Define the global product rules, constraints, and engineering standards.
 
 ### Scope
 
-* Product vision
-* Design and UX principles
-* Content management boundaries
-* Security requirements
-* Performance expectations
-* Deployment strategy
+- Product vision
+- Design and UX principles
+- Content management boundaries
+- Security requirements
+- Performance expectations
+- Deployment strategy
 
 ### Output
 
-* Spec Kit constitution
-* High-level product specification
+- Spec Kit constitution
+- High-level product specification
 
 ---
 
@@ -71,24 +71,24 @@ Deliver a polished, recruiter-facing portfolio interface.
 
 ### Scope
 
-* Landing / hero section
-* About section
-* Skills / tech stack
-* Experience summary
-* Featured projects
-* Contact call-to-action
-* Responsive design (mobile-first)
-* Basic SEO structure
+- Landing / hero section
+- About section
+- Skills / tech stack
+- Experience summary
+- Featured projects
+- Contact call-to-action
+- Responsive design (mobile-first)
+- Basic SEO structure
 
 ### Key Focus
 
-* UX hierarchy and storytelling
-* First impression quality
-* Conversion (contact / hiring intent)
+- UX hierarchy and storytelling
+- First impression quality
+- Conversion (contact / hiring intent)
 
 ### Output
 
-* Fully functional public portfolio (static or semi-static content)
+- Fully functional public portfolio (static or semi-static content)
 
 ---
 
@@ -102,30 +102,30 @@ Design a structured content system to support dynamic updates.
 
 Define and model entities such as:
 
-* Profile / personal info
-* Hero content
-* Social links
-* Experiences
-* Projects
-* Case studies
-* Skills
-* Testimonials
-* Contact settings
-* SEO metadata
-* Media assets
+- Profile / personal info
+- Hero content
+- Social links
+- Experiences
+- Projects
+- Case studies
+- Skills
+- Testimonials
+- Contact settings
+- SEO metadata
+- Media assets
 
 ### Key Focus
 
-* Relational data modeling
-* Draft vs published states
-* Ordering and visibility rules
-* Validation constraints
+- Relational data modeling
+- Draft vs published states
+- Ordering and visibility rules
+- Validation constraints
 
 ### Output
 
-* Database schema
-* API/data contracts
-* Content lifecycle rules
+- Database schema
+- API/data contracts
+- Content lifecycle rules
 
 ---
 
@@ -137,24 +137,24 @@ Build a secure internal dashboard to manage portfolio content.
 
 ### Scope
 
-* Admin authentication
-* Dashboard overview
-* CRUD interfaces for all entities
-* Form validation
-* Media upload handling
-* Publish / unpublish controls
-* Content ordering
-* Preview capabilities
+- Admin authentication
+- Dashboard overview
+- CRUD interfaces for all entities
+- Form validation
+- Media upload handling
+- Publish / unpublish controls
+- Content ordering
+- Preview capabilities
 
 ### Key Focus
 
-* Usability and efficiency for content editing
-* Security and access control
-* Reliable data validation
+- Usability and efficiency for content editing
+- Security and access control
+- Reliable data validation
 
 ### Output
 
-* Fully functional admin portal connected to content system
+- Fully functional admin portal connected to content system
 
 ---
 
@@ -166,23 +166,23 @@ Elevate the portfolio to reflect senior engineering impact and expertise.
 
 ### Scope
 
-* Detailed case studies
-* Problem → solution → outcome storytelling
-* Metrics and measurable impact
-* Architecture and decision explanations
-* Downloadable CV
-* Testimonials
-* Optional sections (articles, open source, talks)
+- Detailed case studies
+- Problem → solution → outcome storytelling
+- Metrics and measurable impact
+- Architecture and decision explanations
+- Downloadable CV
+- Testimonials
+- Optional sections (articles, open source, talks)
 
 ### Key Focus
 
-* Demonstrating business value
-* Highlighting engineering decisions
-* Differentiating from generic portfolios
+- Demonstrating business value
+- Highlighting engineering decisions
+- Differentiating from generic portfolios
 
 ### Output
 
-* High-credibility portfolio content layer
+- High-credibility portfolio content layer
 
 ---
 
@@ -194,25 +194,54 @@ Prepare the platform for production deployment.
 
 ### Scope
 
-* SEO metadata management
-* Open Graph / social sharing
-* Sitemap generation
-* Analytics integration
-* Contact form delivery
-* Accessibility compliance (a11y)
-* Performance optimization
-* Error monitoring/logging
-* Deployment pipeline
+- SEO metadata management
+- Open Graph / social sharing
+- Sitemap generation
+- Analytics integration
+- Contact form delivery
+- Accessibility compliance (a11y)
+- Performance optimization
+- Error monitoring/logging
+- Deployment pipeline
 
 ### Key Focus
 
-* Reliability and robustness
-* Discoverability (SEO)
-* Operational readiness
+- Reliability and robustness
+- Discoverability (SEO)
+- Operational readiness
 
 ### Output
 
-* Production-ready application
+- Production-ready application
+
+---
+
+## Phase 6 — Public Theme Alignment
+
+### Objective
+
+Align the public-facing portfolio visual theme with the terminal-style reference portfolio while preserving the current data-driven structure, accessibility standards, and performance expectations.
+
+### Scope
+
+- Terminal-style dark theme alignment for public portfolio pages
+- Shared visual system updates for homepage and public detail views
+- Strongest atmospheric effects concentrated in the homepage or hero area
+- Calmer presentation for long-form case-study content
+- Preservation of existing published-content rules and self-hiding section behavior
+- Accessibility, reduced-motion, and mobile responsiveness validation
+- Performance protection for public pages after the visual refresh
+
+### Key Focus
+
+- Distinctive first impression without layout imitation
+- Consistent theme application across public surfaces
+- Preservation of recruiter-first content hierarchy and calls to action
+- No regressions in accessibility, readability, or Core Web Vitals
+
+### Output
+
+- Refreshed public portfolio theme layered onto the existing content-driven platform
 
 ---
 
@@ -220,33 +249,33 @@ Prepare the platform for production deployment.
 
 ### Recommended Stack
 
-* Frontend: Next.js + TypeScript
-* Styling: Tailwind CSS
-* Backend: Next.js API routes or separate backend (Laravel/Nest)
-* Database: PostgreSQL
-* ORM: Prisma (if TypeScript stack)
-* Auth: Secure session-based admin authentication
-* Storage: S3-compatible for media/assets
+- Frontend: Next.js + TypeScript
+- Styling: Tailwind CSS
+- Backend: Next.js API routes or separate backend (Laravel/Nest)
+- Database: PostgreSQL
+- ORM: Prisma (if TypeScript stack)
+- Auth: Secure session-based admin authentication
+- Storage: S3-compatible for media/assets
 
 ### Architecture Notes
 
-* Single app with `/admin` route or monorepo depending on complexity
-* Strong separation between:
+- Single app with `/admin` route or monorepo depending on complexity
+- Strong separation between:
+  - Public rendering layer
+  - Content management layer
 
-  * Public rendering layer
-  * Content management layer
-* Reusable component system
-* Typed API contracts
+- Reusable component system
+- Typed API contracts
 
 ---
 
 ## Key Constraints
 
-* No hardcoded portfolio content in the UI (except explicitly defined static elements)
-* Draft content must never be publicly visible
-* All admin actions must be validated server-side
-* Public UI must handle missing/partial content gracefully
-* Content ordering must be manageable without code changes
+- No hardcoded portfolio content in the UI (except explicitly defined static elements)
+- Draft content must never be publicly visible
+- All admin actions must be validated server-side
+- Public UI must handle missing/partial content gracefully
+- Content ordering must be manageable without code changes
 
 ---
 

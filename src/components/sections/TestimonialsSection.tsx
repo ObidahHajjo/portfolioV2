@@ -1,4 +1,6 @@
+import TerminalFrame from '@/components/theme/TerminalFrame';
 import { getPublishedTestimonials, getSectionVisibility } from '@/lib/content/queries';
+
 import { TestimonialCard } from './TestimonialCard';
 
 export async function TestimonialsSection() {
@@ -12,14 +14,16 @@ export async function TestimonialsSection() {
   }
 
   return (
-    <section className="py-16" id="testimonials">
-      <div className="container">
-        <h2 className="text-2xl font-bold">What People Say</h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((testimonial) => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-          ))}
-        </div>
+    <section className="terminal-section" id="testimonials">
+      <div className="mx-auto max-w-6xl">
+        <TerminalFrame title="~/public/testimonials.log" label="Testimonials">
+          <h2 className="terminal-heading text-[clamp(1.9rem,3vw,3rem)]">What People Say</h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+            ))}
+          </div>
+        </TerminalFrame>
       </div>
     </section>
   );
