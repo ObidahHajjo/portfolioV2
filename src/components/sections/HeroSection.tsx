@@ -32,7 +32,7 @@ export default async function HeroSection({ data }: HeroSectionProps) {
            <a className="terminal-button-primary focus-ring" href={data.ctaHref}>
               {data.ctaText}
             </a>
-          <CvDownloadButton className="min-h-11 rounded-full bg-white px-6 py-3 text-base font-semibold text-slate-950 hover:bg-sky-100 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" />
+          <CvDownloadButton className="terminal-button-secondary focus-ring" />
         </div>
 
         <TerminalFrame
