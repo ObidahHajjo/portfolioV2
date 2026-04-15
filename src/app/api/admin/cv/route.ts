@@ -13,8 +13,12 @@ export const GET = withAdminAuth(async () => {
     orderBy: { createdAt: 'desc' },
   });
 
-  const { storageKey: _, ...publicCv } = cv ?? {};
-  return NextResponse.json({ cv: publicCv || null });
+  if (!cv) {
+    return NextResponse.json({ cv: null });
+  }
+
+  const { storageKey: _, ...publicCv } = cv;
+  return NextResponse.json({ cv: publicCv });
 });
 
 export const POST = withAdminAuth(async (req) => {
