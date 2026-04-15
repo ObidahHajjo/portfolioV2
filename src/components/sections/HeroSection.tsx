@@ -1,3 +1,4 @@
+import { CvDownloadButton } from '@/components/ui/CvDownloadButton';
 import TerminalFrame from '@/components/theme/TerminalFrame';
 import type { HeroData } from '@/types/portfolio';
 
@@ -5,7 +6,7 @@ interface HeroSectionProps {
   data: HeroData | null;
 }
 
-export default function HeroSection({ data }: HeroSectionProps) {
+export default async function HeroSection({ data }: HeroSectionProps) {
   if (data === null) {
     return null;
   }
@@ -25,15 +26,13 @@ export default function HeroSection({ data }: HeroSectionProps) {
           <p className="terminal-subheading">
             terminal-style public experience // recruiter-first hierarchy
           </p>
-          <p className="mt-6 max-w-2xl terminal-copy">{data.subHeadline}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a className="terminal-button-primary focus-ring" href={data.ctaHref}>
+        </div>
+        <p className="mt-6 max-w-2xl terminal-copy">{data.subHeadline}</p>
+        <div className="flex flex-wrap gap-4">
+           <a className="terminal-button-primary focus-ring" href={data.ctaHref}>
               {data.ctaText}
             </a>
-            <a className="terminal-button-secondary focus-ring" href="#projects">
-              Browse work
-            </a>
-          </div>
+          <CvDownloadButton className="min-h-11 rounded-full bg-white px-6 py-3 text-base font-semibold text-slate-950 hover:bg-sky-100 focus-visible:ring-sky-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" />
         </div>
 
         <TerminalFrame
