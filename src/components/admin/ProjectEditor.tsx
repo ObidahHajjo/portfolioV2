@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { EntityForm } from '@/components/admin/EntityForm';
 import { MediaUploadField } from '@/components/admin/MediaUploadField';
@@ -23,6 +24,21 @@ function normalizeProjectDefaults(defaultValues: Record<string, unknown>) {
     isVisible: defaultValues.isVisible === undefined ? true : Boolean(defaultValues.isVisible),
     skillIds: Array.isArray(defaultValues.skillIds) ? defaultValues.skillIds : [],
   };
+}
+
+function normalizeProjectSubmission(
+  fields: AdminFieldConfig[],
+  values: Record<string, unknown>
+) {
+  const next = { ...values };
+
+  for (const field of fields) {
+    if (field.serializeAs === 'optional' && next[field.name] === '') {
+      next[field.name] = undefined;
+    }
+  }
+
+  return next;
 }
 
 export function ProjectEditor({
@@ -67,6 +83,21 @@ export function ProjectEditor({
       { name: 'skillIds', label: 'Skills', type: 'multiselect', options: skillOptions },
     ],
     [skillOptions]
+  );
+
+  const clientSchema = useMemo(
+    () =>
+      z.preprocess(
+        (raw) => {
+          if (!raw || typeof raw !== 'object') {
+            return raw;
+          }
+
+          return normalizeProjectSubmission(fields, raw as Record<string, unknown>);
+        },
+        ProjectSchema as z.ZodType<Record<string, unknown>>
+      ),
+    [fields]
   );
 
   return (
@@ -120,7 +151,7 @@ export function ProjectEditor({
         </CardHeader>
         <CardContent className="space-y-6">
           <EntityForm
-            schema={ProjectSchema as any}
+            schema={clientSchema as any}
             defaultValues={normalizeProjectDefaults(defaultValues)}
             fields={fields as any}
             onSubmit={async (values) => {
